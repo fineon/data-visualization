@@ -1,0 +1,16 @@
+.header{
+    width: 100%;
+    height: auto;
+    background-color: antiquewhite;
+
+    &__nav{
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+
+        &__text{
+            margin: 8px 8px;
+            font-size: large;
+        }
+    }
+}
