@@ -28,22 +28,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+let covidAPI = 'https://api.covid19api.com/dayone/country/south-africa/status/confirmed';
+
 export default class Dashboard extends Component {
     state={
         data: [],
     }
 
+
     componentDidMount(){
-        axios.get('').then(item =>{
+        axios.get(covidAPI).then(item =>{
             console.log(item);
+            this.setState({
+                data: item.data[0].Cases
+            });
+            
         });
 
-      
+        
     }
     
-    //saving doc and 2nd render did not show the chart
     componentDidUpdate(){
-       
+
+
             const chart = Highcharts.chart('test', {
                 chart: {
                     type: 'bar'
@@ -74,7 +81,7 @@ export default class Dashboard extends Component {
 
     render() {
         document.title="COVID-19 Data Dashboard"
-
+        console.log(this.state.data);
         return (
             <div>
                 <h2>data dashboard</h2>
