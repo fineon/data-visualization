@@ -2,39 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Highcharts, { chart } from 'highcharts';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const chart = Highcharts.chart('test', {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'Fruit Consumption'
-        },
-        xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
-        },
-        yAxis: {
-            title: {
-                text: 'Fruit eaten'
-            }
-        },
-        series: [{
-            name: 'Jane',
-            data: [1, 0, 4]
-        }, {
-            name: 'John',
-            data: [5, 7, 3]
-        }]
-    });
-});
+import './Dashboard.scss';
 
 let covidAPI = 'https://api.covid19api.com/dayone/country/south-africa/status/confirmed';
+
+let currentDate = new Date().toISOString();
+console.log(currentDate);
 
 export default class Dashboard extends Component {
     state={
         data: [],
     }
 
+    //add comparison calculations to stats to emphasize impacts of COVID
 
     componentDidMount(){
         axios.get(covidAPI).then(item =>{
@@ -45,12 +25,35 @@ export default class Dashboard extends Component {
             
         });
 
-        
+        document.addEventListener('DOMContentLoaded', function () {
+            const chart = Highcharts.chart('test', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Fruit Consumption'
+                },
+                xAxis: {
+                    categories: ['Apples', 'Bananas', 'Oranges']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Fruit eaten'
+                    }
+                },
+                series: [{
+                    name: 'Jane',
+                    data: [1, 0, 4]
+                }, {
+                    name: 'John',
+                    data: [5, 7, 3]
+                }]
+            });
+        });
+
     }
     
     componentDidUpdate(){
-
-
             const chart = Highcharts.chart('test', {
                 chart: {
                     type: 'bar'
@@ -81,7 +84,6 @@ export default class Dashboard extends Component {
 
     render() {
         document.title="COVID-19 Data Dashboard"
-        console.log(this.state.data);
         return (
             <div>
                 <h2>data dashboard</h2>
@@ -91,9 +93,11 @@ export default class Dashboard extends Component {
                 </p>
 
                 <div id="test" >
-                    {chart}
+                   
                 </div>
 
+                <h2>Total Cases</h2>
+                <p>450 <span>confirmed</span></p>
               
                 
             </div>
