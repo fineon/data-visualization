@@ -12,6 +12,10 @@ export default function Header() {
 
             <h1 className="header__title">COVID-19 Data Dashboard At A Glance</h1>
             <img src="" alt="" />
+
+            <button>
+                Review
+            </button>
         </header>
     )
 }
