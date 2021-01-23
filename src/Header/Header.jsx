@@ -7,7 +7,7 @@ export default function Header() {
             <nav className="header__nav">
                 <p className="header__nav__text">Resources</p>
                 <p className="header__nav__text">About</p>
-                <p className="header__nav__text">Contact</p>
+                <p className="header__nav__text">Log In / Sign Up</p>
             </nav>
 
             <h1 className="header__title">COVID-19 Data Dashboard At A Glance</h1>
