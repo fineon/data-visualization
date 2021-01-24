@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
                 type: 'pie'
             },
             title: {
-                text: 'Total Confirmed Cases'
+                text: 'Global COVID-19 Cases'
             },
             series: [{
                 name: 'cases',
@@ -55,13 +55,32 @@ export default class Dashboard extends Component {
                     series: [{
                         // name: item.data.Countries[0].TotalConfirmed,
                         name: item.data.Global.NewConfirmed,
-                        data: [{
-                            name: 'Jane',
-                            y: 31
+                        //cant set data with the API data as it doesn't has the y% and no 
+                        data: [
+                            {
+                            name: 'New Confirmed',
+                            y: item.data.Global.NewConfirmed
                         }, {
-                            name: 'John',
-                            y: 69
-                        }]
+                            name: 'Total Confirmed',
+                            y: item.data.Global.TotalConfirmed
+                        },
+                        {
+                            name: 'New Deaths',
+                            y: item.data.Global.NewDeaths
+                        },
+                        {
+                            name: 'Total Deaths',
+                            y: item.data.Global.TotalDeaths
+                        },
+                        {
+                            name: 'New Recovered',
+                            y: item.data.Global.NewRecovered
+                        },
+                        {
+                            name: 'Total Recovered',
+                            y: item.data.Global.TotalRecovered
+                        }
+                    ]
                     }]
                 }
             });
@@ -101,6 +120,11 @@ export default class Dashboard extends Component {
 
         //need to sort data by provinces and create a histogram + all province confirmed cases/canada
 
+        //returns undefined
+        // console.log(this.state.countries.Global.TotalConfirmed)
+
+        //returns the API object
+        // console.log(this.state.countries.Global)
 
         return (
             <section>
@@ -130,7 +154,7 @@ export default class Dashboard extends Component {
                 </div>
 
 
-                <p>data updated as of {new Date(this.state.countries.Date).toLocaleDateString()}</p>
+                <p>data updated as of {new Date(this.state.countries.Date).toDateString()}</p>
 
                 <div>
                     <h2>your country here</h2>
@@ -149,11 +173,18 @@ export default class Dashboard extends Component {
                 </div>
 
                 <div>
+                    {/* sort method in array? style with most red, then decrease redness by 10% */}
+                    <h2>Top #1 country with most confirmed cases</h2>
+                    <h2>Top #2...</h2>
+                </div>
+
+                <div>
                     <h2>Province details</h2>
                     <p>province 1</p>
                     <p>confirmed cases, recovered, deaths</p>
                     <p>province 2 etc.</p>
                 </div>
+
 
 
 
