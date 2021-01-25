@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+
 import Header from './../Header/Header';
 
 import './Dashboard.scss';
@@ -42,17 +43,17 @@ export default class Dashboard extends Component {
             title: {
                 text: 'Global COVID-19 Cases'
             },
-            series: [{
-                name: 'cases',
-                colorByPoint: true,
-                data: [{
-                    name: 'Jane',
-                    y: 31
-                }, {
-                    name: 'John',
-                    y: 69
-                }]
-            }]
+            // series: [{
+            //     name: 'cases',
+            //     colorByPoint: true,
+            //     data: [{
+            //         name: 'Jane',
+            //         y: 31
+            //     }, {
+            //         name: 'John',
+            //         y: 69
+            //     }]
+            // }]
         }
     }
 
@@ -72,6 +73,7 @@ export default class Dashboard extends Component {
                 chartOptions: {
                     series: [{
                         name: 'cases',
+                        colorByPoint: true,
                         data: [
                             {
                                 name: 'New Confirmed',
@@ -151,6 +153,10 @@ export default class Dashboard extends Component {
     render() {
         document.title = "COVID-19 Data Dashboard"
 
+        if (this.state.instantAnswers.Infobox) {
+            //remove the last nested object for proper mapping JSX
+            let popped = this.state.instantAnswers.Infobox.content.pop()
+        }
 
         if (this.state.countries.Countries) {
             //renders an array only with numbers of new cases
@@ -271,12 +277,15 @@ export default class Dashboard extends Component {
 
                     {this.state.instantAnswers.Abstract ? <p>{this.state.instantAnswers.Abstract}</p> : null}
 
-                    {/* {this.state.instantAnswers.Infobox.content ? this.state.instantAnswers.Infobox.content.map(info => {
-                        <>
+                    {this.state.instantAnswers.Infobox ? this.state.instantAnswers.Infobox.content.map(info => {
+                        return (
+                        <div key={info.wiki_order}>
                         <p>{info.label}</p>
+                        {/* last value item has an object, cant map it */}
+                        {/* <p>{info.value != info.value[-1]}</p> */}
                         <p>{info.value}</p>
-                        </>
-                    }) : null} */}
+                        </div>)
+                    }) : null}
 
                     <form action="" onSubmit={this.searchQuery}>
                         <input type="text" name='query' />

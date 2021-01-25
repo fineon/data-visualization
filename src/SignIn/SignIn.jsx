@@ -38,12 +38,13 @@ export default class SignIn extends Component {
         data: {}
     }
     componentDidMount() {
+        //Error: An AuthUI instance already exists for the key "[DEFAULT]" after a re-render
+
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         } else {
             firebase.app();
         }
-
 
 
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -53,7 +54,7 @@ export default class SignIn extends Component {
             signInOptions: [
                 firebase.auth.EmailAuthProvider.PROVIDER_ID
             ],
-            signInSuccessUrl: 'localhost:3000/dashboard/:user',
+            signInSuccessUrl: './dashboard/',
             // Other config options...
         });
 
