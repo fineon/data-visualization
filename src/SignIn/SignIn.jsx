@@ -48,14 +48,16 @@ export default class SignIn extends Component {
 
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-        this.ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+        ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
         ui.start('#firebaseui-container', {
             signInOptions: [
                 firebase.auth.EmailAuthProvider.PROVIDER_ID
             ],
+            signInSuccessUrl: 'localhost:3000/dashboard/:user',
             // Other config options...
         });
 
+        
 
     }
 

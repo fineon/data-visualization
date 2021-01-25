@@ -106,6 +106,7 @@ export default class Dashboard extends Component {
         return (
             <section>
                 <Header username='jason'/>
+
                 <h2>data dashboard</h2>
 
                 <form action="">
