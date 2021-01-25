@@ -100,8 +100,6 @@ export default class Dashboard extends Component {
 
     //onChange event not firing, no console.log when clicked
     setCountry = (event) => {
-        //returns undefined, cant read prop of undefined
-        // console.log(this.state.countries.Global.TotalConfirmed)
 
         // axios.get(`https://api.covid19api.com/live/country/${event.target.country.value}`).then(item => {
         //     console.log(item);
@@ -115,17 +113,15 @@ export default class Dashboard extends Component {
 
     }
 
-    // top1 = () => {
-    //     return this.state.countries.Global.TotalConfirmed / 7,800,000,000 * 100
-    // }
-
 
     render() {
         document.title = "COVID-19 Data Dashboard"
 
 
         if (this.state.countries.Countries) {
+            //renders an array only with numbers of new cases
             let numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
+            //find the largest number
             let biggestCase = Math.max(...numArr)
 
             //returns a number
@@ -134,10 +130,28 @@ export default class Dashboard extends Component {
             //returns NaN 
             console.log(Math.max(numArr))
 
+            //find the country with most new cases
             let topNewCaseCountry = this.state.countries.Countries.find(num => num.NewConfirmed === biggestCase)
             console.log(topNewCaseCountry)
 
-            console.log(numArr.sort((a, b) => a - b))
+            //sort by lowest to highest cases
+            let rankedCases = numArr.sort((a, b) => a - b)
+            console.log(rankedCases)
+
+            //get the top 5 highest number of cases
+            let cutRanked = rankedCases.splice(184,5)
+            console.log(cutRanked)
+
+            //search for top 5 countries with most confirmed cases
+            let newArr = []
+            for (let i = 0; i < cutRanked.length; i++) {
+                newArr.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
+             
+                // console.log(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
+                
+            }
+
+            console.log(newArr)
 
 
         }
@@ -189,8 +203,6 @@ export default class Dashboard extends Component {
                    
                    <p>{this.state.countries.Global ? this.state.countries.Global.TotalConfirmed : null}</p>
 
-                   {/* <p>{this.top1}</p> */}
-
                     <p>{(780 / 7800) * 100}</p>
                     <p>confirmed cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
@@ -224,7 +236,10 @@ export default class Dashboard extends Component {
 
 
 
-
+                <div>
+                    <h2>And More Data Awaits After Signing Up (Location-based data, export as PDF, CSV and social media sharing)</h2>
+                    <button>Sign In</button>
+                </div>
 
             </section>
         )
