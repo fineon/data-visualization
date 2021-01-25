@@ -9,14 +9,30 @@ import './Dashboard.scss';
 
 let allCountries = 'https://api.covid19api.com/summary';
 let canada = 'https://api.covid19api.com/live/country/canada';
+let covidInfo ='https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
 
-
-let currentDate = new Date().toISOString();
-
-
+//enable CORS on client side
+(function() {
+    var cors_api_host = 'cors-anywhere.herokuapp.com';
+    var cors_api_url = 'https://' + cors_api_host + '/';
+    var slice = [].slice;
+    var origin = window.location.protocol + '//' + window.location.host;
+    var open = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        var args = slice.call(arguments);
+        var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+        if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
+            targetOrigin[1] !== cors_api_host) {
+            args[1] = cors_api_url + args[1];
+        }
+        return open.apply(this, args);
+    };
+})();
 
 export default class Dashboard extends Component {
     state = {
+        global : {},
+        instantAnswers:{},
         countries: {},
         canada: [],
         chartOptions: {
@@ -86,6 +102,15 @@ export default class Dashboard extends Component {
             });
         });
 
+        // got CORS error, may need to set up an express server
+        //resolved using a code snippet
+        axios.get('https://cors-anywhere.herokuapp.com/' + covidInfo).then(answer=>{
+            console.log(answer)
+            this.setState({
+                instantAnswers: answer.data,
+            })
+        })
+
 
 
 
@@ -99,18 +124,27 @@ export default class Dashboard extends Component {
     }
 
     //onChange event not firing, no console.log when clicked
-    setCountry = (event) => {
+    setCountry = (e) => {
+        e.preventDefault()
+        console.log(e.target.countries.value)
+        axios.get(`https://api.covid19api.com/live/country/${e.target.country.value}`).then(item => {
+            console.log(item);
+            this.setState({
+                countries: item.data
+            });
+        });
+        
+    }
 
-        // axios.get(`https://api.covid19api.com/live/country/${event.target.country.value}`).then(item => {
-        //     console.log(item);
-
-        //     this.setState({
-        //         countries: item.data
-        //     });
-        // });
-
-        console.log(event.target.country.value)
-
+    searchQuery = (e) =>{
+        e.preventDefault()
+        console.log(e.target.query.value)
+        axios.get('https://cors-anywhere.herokuapp.com/' + `https://api.duckduckgo.com/?q=${e.target.query.value}&format=json&pretty=1`).then(res => {
+            console.log(res)
+            this.setState({
+                instantAnswers: res.data,
+            })
+        })
     }
 
 
@@ -123,13 +157,6 @@ export default class Dashboard extends Component {
             let numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
             //find the largest number
             let biggestCase = Math.max(...numArr)
-
-            //returns a number
-            console.log(Math.max(...numArr))
-
-            //returns NaN 
-            console.log(Math.max(numArr))
-
             //find the country with most new cases
             let topNewCaseCountry = this.state.countries.Countries.find(num => num.NewConfirmed === biggestCase)
             console.log(topNewCaseCountry)
@@ -146,9 +173,6 @@ export default class Dashboard extends Component {
             let newArr = []
             for (let i = 0; i < cutRanked.length; i++) {
                 newArr.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
-             
-                // console.log(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
-                
             }
 
             console.log(newArr)
@@ -168,6 +192,8 @@ export default class Dashboard extends Component {
         //returns the API object
         // console.log(this.state.countries.Global)
 
+    console.log(this.state.instantAnswers)
+
         return (
             <section>
                 <Header />
@@ -175,14 +201,16 @@ export default class Dashboard extends Component {
 
                 <form action="">
                     <label htmlFor=""> Select your country to view cases </label>
-                    <select name="countries" id="countries">
+                    <select 
+                    name="countries" 
+                    // can't read value
+                    value='need value from the country object'
+                    onChange={this.setCountry}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
                                 key={country.ID}
-                                name='country'
-                                value={country.Country}
-                                onChange={this.setCountry}>
+                                value={country.Country}>
                                 {country.Country}
                             </option>
                         })}
@@ -199,23 +227,26 @@ export default class Dashboard extends Component {
 
                 <div>
                     <h2>World Total Cases</h2>
-                    {/* <p>{this.state.countries.Global ? this.state.countries.Global.TotalConfirmed/7,800,000,000*100 : null}</p> */}
-                   
-                   <p>{this.state.countries.Global ? this.state.countries.Global.TotalConfirmed : null}</p>
-
-                    <p>{(780 / 7800) * 100}</p>
+                    <p>{this.state.countries.Global ? this.state.countries.Global.TotalConfirmed/7800000000*100 : null}</p>
                     <p>confirmed cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
                     </p>
                 </div>
 
                 <div>
-                    {/* sort method in array? style with most red, then decrease redness by 10% */}
-                    <h2>Top #1 country with most confirmed cases</h2>
                     {/* cant reach the variable */}
-                    <h3>{this.topNewCaseCountry}</h3>
-                    <h2>Top #2...</h2>
-                    <h3>Top 3...</h3>
+                    <h2>{this.topNewCaseCountry} is the country with most newly confirmed cases</h2>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartOptions} />
+
+                </div>
+
+                <div>
+                    <h2>Top 5 countries with most newly confirmed cases</h2>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={this.state.chartOptions} />
                 </div>
                 
 
@@ -232,6 +263,30 @@ export default class Dashboard extends Component {
                     <p>province 1</p>
                     <p>confirmed cases, recovered, deaths</p>
                     <p>province 2 etc.</p>
+                </div>
+
+                <div>
+                    <h2>Your DuckDuckGo Answer Machine</h2>
+                    {this.state.instantAnswers.Heading ? <h2>{this.state.instantAnswers.Heading}</h2> : null}
+
+                    {this.state.instantAnswers.Abstract ? <p>{this.state.instantAnswers.Abstract}</p> : null}
+
+                    {/* {this.state.instantAnswers.Infobox.content ? this.state.instantAnswers.Infobox.content.map(info => {
+                        <>
+                        <p>{info.label}</p>
+                        <p>{info.value}</p>
+                        </>
+                    }) : null} */}
+
+                    <form action="" onSubmit={this.searchQuery}>
+                        <input type="text" name='query' />
+                        <button>Search</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h2>Newsfeed</h2>
+                    <div></div>
                 </div>
 
 
