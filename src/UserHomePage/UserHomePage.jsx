@@ -4,14 +4,11 @@ import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import Header from './../Header/Header';
 
-import './Dashboard.scss';
+import './UserHomePage.scss';
 
 
 let allCountries = 'https://api.covid19api.com/summary';
 let canada = 'https://api.covid19api.com/live/country/canada';
-
-
-let currentDate = new Date().toISOString();
 
 
 
@@ -54,6 +51,7 @@ export default class Dashboard extends Component {
                 countries: item.data,
                 chartOptions: {
                     series: [{
+                        // name: item.data.Countries[0].TotalConfirmed,
                         name: 'cases',
                         data: [
                             {
@@ -98,36 +96,16 @@ export default class Dashboard extends Component {
     }
 
     setCountry = (event) => {
-        //returns undefined, cant read prop of undefined
-        // console.log(this.state.countries.Global.TotalConfirmed)
-
-        // axios.get(`https://api.covid19api.com/live/country/${event.target.value}`).then(item => {
-        //     console.log(item);
-
-        //     this.setState({
-        //         countries: item.data
-        //     });
-        // });
-
         console.log(event.target.country.value)
 
     }
 
 
     render() {
-        document.title = "COVID-19 Data Dashboard"
-
-        //need to sort data by provinces and create a histogram + all province confirmed cases/canada
-
-        //returns undefined
-        // console.log(this.state.countries.Global.TotalConfirmed)
-
-        //returns the API object
-        // console.log(this.state.countries.Global)
-
+        document.title = "User Data Dashboard"
         return (
             <section>
-                <Header />
+                <Header username='jason'/>
                 <h2>data dashboard</h2>
 
                 <form action="">
