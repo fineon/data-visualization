@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -32,29 +33,12 @@ let covidInfo ='https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
 
 export default class Dashboard extends Component {
     state = {
-        global : {},
         instantAnswers:{},
         countries: {},
         canada: [],
-        chartOptions: {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Global COVID-19 Cases'
-            },
-            // series: [{
-            //     name: 'cases',
-            //     colorByPoint: true,
-            //     data: [{
-            //         name: 'Jane',
-            //         y: 31
-            //     }, {
-            //         name: 'John',
-            //         y: 69
-            //     }]
-            // }]
-        }
+        pieChartCases: {},
+        topNewCaseCountry: {},
+        top5Countries: {},
     }
 
     //add comparison calculations to stats to emphasize impacts of COVID
@@ -70,7 +54,13 @@ export default class Dashboard extends Component {
 
             this.setState({
                 countries: item.data,
-                chartOptions: {
+                pieChartCases: {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Global COVID-19 Cases'
+                    },
                     series: [{
                         name: 'cases',
                         colorByPoint: true,
@@ -100,7 +90,9 @@ export default class Dashboard extends Component {
                             }
                         ]
                     }]
-                }
+                },
+               
+                
             });
         });
 
@@ -113,8 +105,90 @@ export default class Dashboard extends Component {
             })
         })
 
+        this.setState({
+            // topNewCaseCountry: {
+            //     chart: {
+            //         type: 'pie'
+            //     },
+            //     title: {
+            //         text: 'United States COVID-19 Cases'
+            //     },
+            //     series: [{
+            //         name: 'cases',
+            //         colorByPoint: true,
+            //         data: [
+            //             {
+            //                 name: 'New Confirmed',
+            //                 y: item.data.Global.NewConfirmed
+            //             }, {
+            //                 name: 'Total Confirmed',
+            //                 y: item.data.Global.TotalConfirmed
+            //             },
+            //             {
+            //                 name: 'New Deaths',
+            //                 y: item.data.Global.NewDeaths
+            //             },
+            //             {
+            //                 name: 'Total Deaths',
+            //                 y: item.data.Global.TotalDeaths
+            //             },
+            //             {
+            //                 name: 'New Recovered',
+            //                 y: item.data.Global.NewRecovered
+            //             },
+            //             {
+            //                 name: 'Total Recovered',
+            //                 y: item.data.Global.TotalRecovered
+            //             }
+            //         ]
+            //     }]
+            // },
+            top5Countries: {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Top 5 Countries with Most New Cases'
+                },
+                xAxis: {categories: [
+                   1,
+                   2,
+                   3,
+                   4,
+                   5
+                ]},
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'New Cases'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                      stacking: 'normal',
+                      dataLabels: {
+                        enabled: true
+                      }
+                    }
+                },
+                series: [
+                    {
+                    name: 'confirmed cases',
+                    data: [3,3,3]
+                },
+                {
+                    name: 'recovered cases',
+                    data: [3,5,1]
+                },
+                {
+                    name: 'death cases',
+                    data: [9,5,1]
+                }
+            ]
+            },
+        })
 
-
+     
 
 
     }
@@ -158,6 +232,7 @@ export default class Dashboard extends Component {
             let popped = this.state.instantAnswers.Infobox.content.pop()
         }
 
+        
         if (this.state.countries.Countries) {
             //renders an array only with numbers of new cases
             let numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
@@ -176,37 +251,23 @@ export default class Dashboard extends Component {
             console.log(cutRanked)
 
             //search for top 5 countries with most confirmed cases
-            let newArr = []
+            let top5Countries = []
             for (let i = 0; i < cutRanked.length; i++) {
-                newArr.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
+                top5Countries.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
             }
-
-            console.log(newArr)
-
-
+            
+            console.log(top5Countries)
         }
-
-
-
-
-
-        //need to sort data by provinces and create a histogram + all province confirmed cases/canada
-
-        //returns undefined
-        // console.log(this.state.countries.Global.TotalConfirmed)
-
-        //returns the API object
-        // console.log(this.state.countries.Global)
 
     console.log(this.state.instantAnswers)
 
         return (
             <section>
                 <Header />
-                <h2>data dashboard</h2>
+                <h2 id="dashboard">data dashboard</h2>
 
-                <form action="">
-                    <label htmlFor=""> Select your country to view cases </label>
+                <form >
+                    <label > Select your country to view cases </label>
                     <select 
                     name="countries" 
                     // can't read value
@@ -227,24 +288,49 @@ export default class Dashboard extends Component {
                 <div className="test">
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={this.state.chartOptions} />
+                        options={this.state.pieChartCases} />
                     <p>data updated as of {new Date(this.state.countries.Date).toDateString()}</p>
                 </div>
 
                 <div>
                     <h2>World Total Cases</h2>
-                    <p>{this.state.countries.Global ? this.state.countries.Global.TotalConfirmed/7800000000*100 : null}</p>
+                    <p>
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalConfirmed/7800000000*100).toFixed(2) : null}%
+                    </p>
                     <p>confirmed cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
                     </p>
                 </div>
 
                 <div>
+                    <h2>World Total Cases</h2>
+                    <p>
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalDeaths/7800000000*100).toFixed(2) : null}%
+                    </p>
+                    <p>death cases</p>
+                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
+                    </p>
+                </div>
+
+                <div>
+                    <h2>World Total Cases</h2>
+                    <p>
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalRecovered/7800000000*100).toFixed(2) : null}%
+                        </p>
+                    <p>recovered cases</p>
+                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
+                    </p>
+                </div>
+
+                <div>
                     {/* cant reach the variable */}
-                    <h2>{this.topNewCaseCountry} is the country with most newly confirmed cases</h2>
+                    {/* <h2>{topNewCaseCountry.Country} is the country with most newly confirmed cases</h2> */}
+
+                    <h2>top new cases in country</h2>
+
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={this.state.chartOptions} />
+                        options={this.state.pieChartCases} />
 
                 </div>
 
@@ -252,7 +338,7 @@ export default class Dashboard extends Component {
                     <h2>Top 5 countries with most newly confirmed cases</h2>
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={this.state.chartOptions} />
+                        options={this.state.top5Countries} />
                 </div>
                 
 
@@ -275,20 +361,26 @@ export default class Dashboard extends Component {
                     <h2>Your DuckDuckGo Answer Machine</h2>
                     {this.state.instantAnswers.Heading ? <h2>{this.state.instantAnswers.Heading}</h2> : null}
 
-                    {this.state.instantAnswers.Abstract ? <p>{this.state.instantAnswers.Abstract}</p> : null}
+                    {this.state.instantAnswers.Image ? <img 
+                    src={`https://www.duckduckgo.com${this.state.instantAnswers.Image}`} 
+                    
+                    alt='duckduckgo preview img' /> : null}
+
+                    {this.state.instantAnswers.Abstract ? <p>{this.state.instantAnswers.Abstract}</p> : <a href={this.state.instantAnswers.AbstractURL}>{this.state.instantAnswers.AbstractURL}</a>}
 
                     {this.state.instantAnswers.Infobox ? this.state.instantAnswers.Infobox.content.map(info => {
                         return (
                         <div key={info.wiki_order}>
                         <p>{info.label}</p>
-                        {/* last value item has an object, cant map it */}
-                        {/* <p>{info.value != info.value[-1]}</p> */}
                         <p>{info.value}</p>
                         </div>)
                     }) : null}
 
                     <form action="" onSubmit={this.searchQuery}>
-                        <input type="text" name='query' />
+                        <input 
+                        type="text" 
+                        name='query'
+                        placeholder='Search for topics' />
                         <button>Search</button>
                     </form>
                 </div>
@@ -302,7 +394,9 @@ export default class Dashboard extends Component {
 
                 <div>
                     <h2>And More Data Awaits After Signing Up (Location-based data, export as PDF, CSV and social media sharing)</h2>
+                    <Link to='/signin'>
                     <button>Sign In</button>
+                    </Link>
                 </div>
 
             </section>

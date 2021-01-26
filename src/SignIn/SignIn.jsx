@@ -8,6 +8,8 @@ import "firebase/analytics"
 
 import './SignIn.scss'
 
+import Header from './../Header/Header';
+
 const firebaseConfig = {
     apiKey: "AIzaSyDYdM7vWZtPaUfEaxAtyezJKXW9CM5hgxE",
     authDomain: "covid-user-sign-in.firebaseapp.com",
@@ -68,18 +70,7 @@ export default class SignIn extends Component {
     render() {
         return (
             <section>
-                <nav className="header__nav">
-                    <Link to='/'>
-                        <p className="header__nav__text">Home</p>
-                    </Link>
-                    <p className="header__nav__text">Resources</p>
-                    <Link to='/dashboard'>
-                        <p className="header__nav__text">Your Data Dashboard</p>
-                    </Link>
-                    <Link to='/signin'>
-                        <p className="header__nav__text">Log In / Sign Up</p>
-                    </Link>
-                </nav>
+               <Header loggedIn="visitor"/>
 
                 <div id="firebaseui-container"></div>
 
