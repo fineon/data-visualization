@@ -32,7 +32,7 @@ export default function Header(props) {
 
             {props.username ? <h1 className="header__title">Hi {props.username}, Welcome to Your Data Dashboard</h1> : null}
 
-            {props.loggedIn ? <h1 className="header__title">Hi {props.loggedIn}, please log in or sign up to view your local data dashboard</h1> : null}
+            {props.loggedIn ? <h1 className="header__title">Welcome {props.loggedIn}, please log in or sign up to view your local data dashboard</h1> : null}
 
             {props.username || props.loggedIn ? null :<p className='header__desc'>You can view the most current statistics on COVID-19 cases around the world in one page. Get a quick understanding of current situation with <span className='header__desc__phrase'>data visualization</span>, enhanced information from <span className='header__desc__phrase'>API</span> and more</p>}
 

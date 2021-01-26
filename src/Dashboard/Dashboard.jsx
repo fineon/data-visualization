@@ -5,22 +5,23 @@ import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import Header from './../Header/Header';
+import InstantAnswers from './../InstantAnswers/InstantAnswers';
 
 import './Dashboard.scss';
 
 
 let allCountries = 'https://api.covid19api.com/summary';
 let canada = 'https://api.covid19api.com/live/country/canada';
-let covidInfo ='https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
+let covidInfo = 'https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
 
 //enable CORS on client side
-(function() {
+(function () {
     var cors_api_host = 'cors-anywhere.herokuapp.com';
     var cors_api_url = 'https://' + cors_api_host + '/';
     var slice = [].slice;
     var origin = window.location.protocol + '//' + window.location.host;
     var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function() {
+    XMLHttpRequest.prototype.open = function () {
         var args = slice.call(arguments);
         var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
         if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
@@ -33,7 +34,7 @@ let covidInfo ='https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
 
 export default class Dashboard extends Component {
     state = {
-        instantAnswers:{},
+        instantAnswers: {},
         countries: {},
         canada: [],
         pieChartCases: {},
@@ -91,14 +92,14 @@ export default class Dashboard extends Component {
                         ]
                     }]
                 },
-               
-                
+
+
             });
         });
 
         // got CORS error, may need to set up an express server
         //resolved using a code snippet
-        axios.get('https://cors-anywhere.herokuapp.com/' + covidInfo).then(answer=>{
+        axios.get('https://cors-anywhere.herokuapp.com/' + covidInfo).then(answer => {
             console.log(answer)
             this.setState({
                 instantAnswers: answer.data,
@@ -150,13 +151,15 @@ export default class Dashboard extends Component {
                 title: {
                     text: 'Top 5 Countries with Most New Cases'
                 },
-                xAxis: {categories: [
-                   1,
-                   2,
-                   3,
-                   4,
-                   5
-                ]},
+                xAxis: {
+                    categories: [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
+                },
                 yAxis: {
                     min: 0,
                     title: {
@@ -165,30 +168,30 @@ export default class Dashboard extends Component {
                 },
                 plotOptions: {
                     column: {
-                      stacking: 'normal',
-                      dataLabels: {
-                        enabled: true
-                      }
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [
                     {
-                    name: 'confirmed cases',
-                    data: [3,3,3]
-                },
-                {
-                    name: 'recovered cases',
-                    data: [3,5,1]
-                },
-                {
-                    name: 'death cases',
-                    data: [9,5,1]
-                }
-            ]
+                        name: 'confirmed cases',
+                        data: [3, 3, 3]
+                    },
+                    {
+                        name: 'recovered cases',
+                        data: [3, 5, 1]
+                    },
+                    {
+                        name: 'death cases',
+                        data: [9, 5, 1]
+                    }
+                ]
             },
         })
 
-     
+
 
 
     }
@@ -209,10 +212,10 @@ export default class Dashboard extends Component {
                 countries: item.data
             });
         });
-        
+
     }
 
-    searchQuery = (e) =>{
+    searchQuery = (e) => {
         e.preventDefault()
         console.log(e.target.query.value)
         axios.get('https://cors-anywhere.herokuapp.com/' + `https://api.duckduckgo.com/?q=${e.target.query.value}&format=json&pretty=1`).then(res => {
@@ -232,7 +235,7 @@ export default class Dashboard extends Component {
             let popped = this.state.instantAnswers.Infobox.content.pop()
         }
 
-        
+
         if (this.state.countries.Countries) {
             //renders an array only with numbers of new cases
             let numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
@@ -247,7 +250,7 @@ export default class Dashboard extends Component {
             console.log(rankedCases)
 
             //get the top 5 highest number of cases
-            let cutRanked = rankedCases.splice(184,5)
+            let cutRanked = rankedCases.splice(184, 5)
             console.log(cutRanked)
 
             //search for top 5 countries with most confirmed cases
@@ -255,11 +258,11 @@ export default class Dashboard extends Component {
             for (let i = 0; i < cutRanked.length; i++) {
                 top5Countries.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
             }
-            
+
             console.log(top5Countries)
         }
 
-    console.log(this.state.instantAnswers)
+        console.log(this.state.instantAnswers)
 
         return (
             <section>
@@ -268,11 +271,11 @@ export default class Dashboard extends Component {
 
                 <form >
                     <label > Select your country to view cases </label>
-                    <select 
-                    name="countries" 
-                    // can't read value
-                    value='need value from the country object'
-                    onChange={this.setCountry}>
+                    <select
+                        name="countries"
+                        // can't read value
+                        value='need value from the country object'
+                        onChange={this.setCountry}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
@@ -293,9 +296,9 @@ export default class Dashboard extends Component {
                 </div>
 
                 <div>
-                    <h2>World Total Cases</h2>
+                    <h2>World Total Confirmed Cases</h2>
                     <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalConfirmed/7800000000*100).toFixed(2) : null}%
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalConfirmed / 7800000000 * 100).toFixed(2) : null}%
                     </p>
                     <p>confirmed cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
@@ -303,9 +306,9 @@ export default class Dashboard extends Component {
                 </div>
 
                 <div>
-                    <h2>World Total Cases</h2>
+                    <h2>World Total Death Cases</h2>
                     <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalDeaths/7800000000*100).toFixed(2) : null}%
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalDeaths / 7800000000 * 100).toFixed(2) : null}%
                     </p>
                     <p>death cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
@@ -313,10 +316,10 @@ export default class Dashboard extends Component {
                 </div>
 
                 <div>
-                    <h2>World Total Cases</h2>
+                    <h2>World Total Recovered Cases</h2>
                     <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalRecovered/7800000000*100).toFixed(2) : null}%
-                        </p>
+                        {this.state.countries.Global ? (this.state.countries.Global.TotalRecovered / 7800000000 * 100).toFixed(2) : null}%
+                    </p>
                     <p>recovered cases</p>
                     <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
                     </p>
@@ -336,11 +339,13 @@ export default class Dashboard extends Component {
 
                 <div>
                     <h2>Top 5 countries with most newly confirmed cases</h2>
+
+                    {/* need to pass the processed variable */}
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={this.state.top5Countries} />
                 </div>
-                
+
 
                 <div>
                     <h2>your country here</h2>
@@ -348,7 +353,7 @@ export default class Dashboard extends Component {
                     <h2>Recovered</h2>
                 </div>
 
-               
+
 
                 <div>
                     <h2>Province details</h2>
@@ -357,45 +362,26 @@ export default class Dashboard extends Component {
                     <p>province 2 etc.</p>
                 </div>
 
-                <div>
-                    <h2>Your DuckDuckGo Answer Machine</h2>
-                    {this.state.instantAnswers.Heading ? <h2>{this.state.instantAnswers.Heading}</h2> : null}
+                <InstantAnswers 
+                Heading={this.state.instantAnswers.Heading}
 
-                    {this.state.instantAnswers.Image ? <img 
-                    src={`https://www.duckduckgo.com${this.state.instantAnswers.Image}`} 
-                    
-                    alt='duckduckgo preview img' /> : null}
+                Image={this.state.instantAnswers.Image}
 
-                    {this.state.instantAnswers.Abstract ? <p>{this.state.instantAnswers.Abstract}</p> : <a href={this.state.instantAnswers.AbstractURL}>{this.state.instantAnswers.AbstractURL}</a>}
+                Abstract={this.state.instantAnswers.Abstract}
 
-                    {this.state.instantAnswers.Infobox ? this.state.instantAnswers.Infobox.content.map(info => {
-                        return (
-                        <div key={info.wiki_order}>
-                        <p>{info.label}</p>
-                        <p>{info.value}</p>
-                        </div>)
-                    }) : null}
+                AbstractURL={this.state.instantAnswers.AbstractURL}
 
-                    <form action="" onSubmit={this.searchQuery}>
-                        <input 
-                        type="text" 
-                        name='query'
-                        placeholder='Search for topics' />
-                        <button>Search</button>
-                    </form>
-                </div>
+                Infobox={this.state.instantAnswers.Infobox}
 
-                <div>
-                    <h2>Newsfeed</h2>
-                    <div></div>
-                </div>
+                searchQuery={this.searchQuery}
+                />
 
 
 
                 <div>
                     <h2>And More Data Awaits After Signing Up (Location-based data, export as PDF, CSV and social media sharing)</h2>
                     <Link to='/signin'>
-                    <button>Sign In</button>
+                        <button>Sign In</button>
                     </Link>
                 </div>
 
