@@ -1,7 +1,7 @@
-@import './fonts';
-@import './variables';
+@import "./fonts";
+@import "./variables";
 
-body{
+body {
     margin: 0;
     padding: 0;
 }
@@ -9,36 +9,50 @@ body{
 h1 {
     font-size: 3rem;
     font-weight: 900;
-    font-family: 'Catamaran', sans-serif;
+    font-family: "Catamaran", sans-serif;
     color: $oxfordblue;
 }
 
 h2 {
     font-size: 2rem;
     font-weight: 700;
-    font-family: 'Catamaran', sans-serif;
+    font-family: "Catamaran", sans-serif;
     color: $oxfordblue;
 }
 
-p{
+h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: "Catamaran", sans-serif;
+    color: $oxfordblue;
+}
+
+h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: "Catamaran", sans-serif;
+    color: $oxfordblue;
+}
+
+p {
     font-size: 1rem;
     font-weight: 400;
-    font-family: 'Catamaran', sans-serif;
+    font-family: "Catamaran", sans-serif;
     color: $oxfordblue;
 }
 
-button{
+button {
     border: none;
     border-radius: 4px;
     background-color: $rustyred;
     font-size: 1rem;
-    font-family: 'Catamaran',sans-serif;
-    font-weight: 700;
+    font-family: "Catamaran", sans-serif;
+    font-weight: 600;
     padding: 16px;
     color: white;
     transition: 0.5s;
 
-    &:hover{
+    &:hover {
         background-color: $oxfordblue;
     }
 }
