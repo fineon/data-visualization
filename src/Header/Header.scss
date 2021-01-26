@@ -1,5 +1,6 @@
-@import '../styles/fonts';
-@import '../styles/variables';
+@import './../styles/fonts';
+@import './../styles/variables';
+@import './../styles//global.scss';
 
 .header{
     width: 100%;
@@ -51,7 +52,7 @@
     }
 
     &__title{
-        font-size: 3rem;
+        text-transform: capitalize;
     }
 
     &__desc{
@@ -84,6 +85,7 @@
         border-radius: 4px;
         background-color: $rustyred;
         font-size: 1rem;
+        font-family: 'Catamaran',sans-serif;
         padding: 16px;
         color: white;
         transition: 0.5s;
