@@ -75,7 +75,7 @@ export default class Dashboard extends Component {
                 },
             });
 
-            
+
         });
 
         // got CORS error, may need to set up an express server
@@ -183,16 +183,23 @@ export default class Dashboard extends Component {
     }
 
     //onChange event not firing, no console.log when clicked
-    setCountry = (e) => {
-        e.preventDefault()
-        console.log(e.target.countries.value)
-        axios.get(`https://api.covid19api.com/live/country/${e.target.countries.value}`).then(item => {
+    // setCountry = (e) => {
+    //     axios.get(`https://api.covid19api.com/live/country/${e.target.countries.value}`).then(item => {
+    //         console.log(item);
+    //         this.setState({
+    //             countries: item.data
+    //         });
+    //     });
+
+    // }
+
+    leftClick=(e) => {
+        axios.get(`https://api.covid19api.com/live/country/${e}`).then(item => {
             console.log(item);
             this.setState({
                 countries: item.data
             });
         });
-
     }
 
     searchQuery = (e) => {
@@ -225,7 +232,7 @@ export default class Dashboard extends Component {
         if (this.state.countries.Countries) {
             // renders an array only with numbers of new cases
             numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
-  
+
             // find the largest number
             biggestCase = Math.max(...numArr)
             console.log(biggestCase)
@@ -242,13 +249,15 @@ export default class Dashboard extends Component {
             console.log(cutRanked)
 
             // search for top 5 countries with most confirmed cases
-            
+
             for (let i = 0; i < cutRanked.length; i++) {
                 top5Countries.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
             }
 
             console.log(top5Countries)
         }
+
+       
         return (
             <section>
                 <Header />
@@ -260,9 +269,9 @@ export default class Dashboard extends Component {
                         name="countries"
 
                         // can't read value
-                        value='need value from the country object'
-
-                        onChange={this.setCountry}>
+                        // value={'need value from the country object'}
+                        
+                        onChange={e => this.leftClick(e.target.value)}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
@@ -349,18 +358,18 @@ export default class Dashboard extends Component {
                     <p>province 2 etc.</p>
                 </div>
 
-                <InstantAnswers 
-                Heading={this.state.instantAnswers.Heading}
+                <InstantAnswers
+                    Heading={this.state.instantAnswers.Heading}
 
-                Image={this.state.instantAnswers.Image}
+                    Image={this.state.instantAnswers.Image}
 
-                Abstract={this.state.instantAnswers.Abstract}
+                    Abstract={this.state.instantAnswers.Abstract}
 
-                AbstractURL={this.state.instantAnswers.AbstractURL}
+                    AbstractURL={this.state.instantAnswers.AbstractURL}
 
-                Infobox={this.state.instantAnswers.Infobox}
+                    Infobox={this.state.instantAnswers.Infobox}
 
-                searchQuery={this.searchQuery}
+                    searchQuery={this.searchQuery}
                 />
 
 
