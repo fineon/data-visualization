@@ -49,7 +49,6 @@ export default class Dashboard extends Component {
 
 
     componentDidMount() {
-
         axios.get(allCountries).then(item => {
             console.log(item);
 
@@ -92,9 +91,9 @@ export default class Dashboard extends Component {
                         ]
                     }]
                 },
-
-
             });
+
+            
         });
 
         // got CORS error, may need to set up an express server
@@ -199,7 +198,6 @@ export default class Dashboard extends Component {
 
     componentDidUpdate() {
 
-
     }
 
     //onChange event not firing, no console.log when clicked
@@ -235,46 +233,54 @@ export default class Dashboard extends Component {
             let popped = this.state.instantAnswers.Infobox.content.pop()
         }
 
+        let numArr = []
+        let biggestCase
+        let topNewCaseCountry
+        let rankedCases
+        let cutRanked
+        let top5Countries = []
+
 
         if (this.state.countries.Countries) {
-            //renders an array only with numbers of new cases
-            let numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
-            //find the largest number
-            let biggestCase = Math.max(...numArr)
-            //find the country with most new cases
-            let topNewCaseCountry = this.state.countries.Countries.find(num => num.NewConfirmed === biggestCase)
+            // renders an array only with numbers of new cases
+            numArr = this.state.countries.Countries.map(num => num.NewConfirmed)
+  
+            // find the largest number
+            biggestCase = Math.max(...numArr)
+            console.log(biggestCase)
+            // find the country with most new cases
+            topNewCaseCountry = this.state.countries.Countries.find(num => num.NewConfirmed === biggestCase)
             console.log(topNewCaseCountry)
 
-            //sort by lowest to highest cases
-            let rankedCases = numArr.sort((a, b) => a - b)
+            // sort by lowest to highest cases
+            rankedCases = numArr.sort((a, b) => a - b)
             console.log(rankedCases)
 
-            //get the top 5 highest number of cases
-            let cutRanked = rankedCases.splice(184, 5)
+            // get the top 5 highest number of cases
+            cutRanked = rankedCases.splice(184, 5)
             console.log(cutRanked)
 
-            //search for top 5 countries with most confirmed cases
-            let top5Countries = []
+            // search for top 5 countries with most confirmed cases
+            
             for (let i = 0; i < cutRanked.length; i++) {
                 top5Countries.push(this.state.countries.Countries.find(obj => obj.NewConfirmed === cutRanked[i]))
             }
 
             console.log(top5Countries)
         }
-
-        console.log(this.state.instantAnswers)
-
         return (
             <section>
                 <Header />
-                <h2 id="dashboard">data dashboard</h2>
+                <h2 id="dashboard">Data Dashboard</h2>
 
                 <form >
                     <label > Select your country to view cases </label>
                     <select
                         name="countries"
+
                         // can't read value
                         value='need value from the country object'
+
                         onChange={this.setCountry}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
@@ -327,7 +333,7 @@ export default class Dashboard extends Component {
 
                 <div>
                     {/* cant reach the variable */}
-                    {/* <h2>{topNewCaseCountry.Country} is the country with most newly confirmed cases</h2> */}
+                    <h2>{this.state.countries.Countries && topNewCaseCountry.Country} is the country with most newly confirmed cases</h2>
 
                     <h2>top new cases in country</h2>
 

@@ -20,61 +20,32 @@ const firebaseConfig = {
     measurementId: "G-M38E2V56TT"
 };
 
+    
+firebase.initializeApp(firebaseConfig);
+
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+
+ui.start('#firebaseui-container', {
+    signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    signInSuccessUrl: './dashboard/',
+    // Other config options...
+});
 
 
-// firebase.auth().createUserWithEmailAndPassword(email, password)
-//     .then((userCredential) => {
-//         // Signed in 
-//         var user = userCredential.user;
-//         // ...
-//     })
-//     .catch((error) => {
-//         var errorCode = error.code;
-//         var errorMessage = error.message;
-//         // ..
-//     });
+export default function SignIn() {
 
 
-export default class SignIn extends Component {
-    state = {
-        data: {}
-    }
-    componentDidMount() {
-        //Error: An AuthUI instance already exists for the key "[DEFAULT]" after a re-render
+    return (
+        <section>
+            <Header loggedIn="visitor" />
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        } else {
-            firebase.app();
-        }
+            <div id="firebaseui-container"></div>
 
+        </section>
+    )
 
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-        ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
-        ui.start('#firebaseui-container', {
-            signInOptions: [
-                firebase.auth.EmailAuthProvider.PROVIDER_ID
-            ],
-            signInSuccessUrl: './dashboard/',
-            // Other config options...
-        });
-
-        
-
-    }
-
-    // componentDidUpdate() {
-    // }
-
-    render() {
-        return (
-            <section>
-               <Header loggedIn="visitor"/>
-
-                <div id="firebaseui-container"></div>
-
-            </section>
-        )
-    }
 }
