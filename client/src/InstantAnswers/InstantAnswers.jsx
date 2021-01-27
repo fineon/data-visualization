@@ -4,7 +4,7 @@ import './InstantAnswers.scss';
 export default function InstantAnswers(props) {
     return (
         <div className='answer'>
-            <h2 className='answer__title'>Topic: {props.Heading ? props.Heading : 'are you searching for'}</h2>
+            <h2 className='answer__title'>Topic: {props.Heading ? props.Heading : 'Undefined, Try Another Search'}</h2>
 
             <div className='answer__title-img-container'>
                 <div className='answer__title-img-container--left'>

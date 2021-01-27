@@ -12,25 +12,7 @@ import './Dashboard.scss';
 
 let allCountries = 'https://api.covid19api.com/summary';
 let canada = 'https://api.covid19api.com/live/country/canada';
-let covidInfo = 'https://api.duckduckgo.com/?q=covid&format=json&pretty=1';
-
-//enable CORS on client side
-(function () {
-    var cors_api_host = 'cors-anywhere.herokuapp.com';
-    var cors_api_url = 'https://' + cors_api_host + '/';
-    var slice = [].slice;
-    var origin = window.location.protocol + '//' + window.location.host;
-    var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function () {
-        var args = slice.call(arguments);
-        var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
-        if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
-            targetOrigin[1] !== cors_api_host) {
-            args[1] = cors_api_url + args[1];
-        }
-        return open.apply(this, args);
-    };
-})();
+let duckDuckGo = 'http://localhost:8080/duckduckgo';
 
 export default class Dashboard extends Component {
     state = {
@@ -98,7 +80,7 @@ export default class Dashboard extends Component {
 
         // got CORS error, may need to set up an express server
         //resolved using a code snippet
-        axios.get('https://cors-anywhere.herokuapp.com/' + covidInfo).then(answer => {
+        axios.get(duckDuckGo).then(answer => {
             console.log(answer)
             this.setState({
                 instantAnswers: answer.data,
@@ -204,7 +186,7 @@ export default class Dashboard extends Component {
     setCountry = (e) => {
         e.preventDefault()
         console.log(e.target.countries.value)
-        axios.get(`https://api.covid19api.com/live/country/${e.target.country.value}`).then(item => {
+        axios.get(`https://api.covid19api.com/live/country/${e.target.countries.value}`).then(item => {
             console.log(item);
             this.setState({
                 countries: item.data
@@ -215,8 +197,7 @@ export default class Dashboard extends Component {
 
     searchQuery = (e) => {
         e.preventDefault()
-        console.log(e.target.query.value)
-        axios.get('https://cors-anywhere.herokuapp.com/' + `https://api.duckduckgo.com/?q=${e.target.query.value}&format=json&pretty=1`).then(res => {
+        axios.get(`http://localhost:8080/duckduckgo/${e.target.query.value}`).then(res => {
             console.log(res)
             this.setState({
                 instantAnswers: res.data,
