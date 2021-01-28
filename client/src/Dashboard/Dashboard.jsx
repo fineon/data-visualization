@@ -35,7 +35,6 @@ export default class Dashboard extends Component {
     //add comparison calculations to stats to emphasize impacts of COVID
     //add increments or decreasing numbers on dashboard
     //add button enabling dark mode
-    //separate stats by components
 
 
     componentDidMount() {

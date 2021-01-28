@@ -14,7 +14,7 @@ function App() {
     <Router>
       <Switch>
         <Route path='/' exact component={Dashboard} />
-        <Route path='/signin' render={(props) => <TestSignIn {...props}/>} />
+        <Route path='/signin' render={(props) => <SignIn {...props}/>} />
         <Route path='/dashboard/' render={(props) => <UserHomePage {...props}/>} />
       </Switch>
     </Router>
