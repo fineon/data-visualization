@@ -1,0 +1,54 @@
+@import './../styles/fonts';
+@import './../styles/variables';
+@import './../styles/global.scss';
+
+.worldcards{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+
+    
+
+    &__card{
+        border: 1px solid $ebony;
+        border-radius: 4px;
+        margin: 16px;
+        width: 30%;
+        background-color: $oxfordblue;
+        transition: 0.5s;
+
+        &:hover{
+            transform: scale(1.2);
+
+        }
+        
+        &__title{
+            text-align: center;
+            color: white;
+        }
+
+        &__stat{
+            font-size: 6rem;
+            margin: 32px 0;
+            text-align: center;
+            color: $rustyred;
+        
+        }
+
+        &__desc{
+            color: $sunglow;
+            text-align: center;
+        }
+
+        &__link{
+            text-decoration: none;
+            color: $sunglow;
+            font-weight: 600;
+        }
+    }
+
+   
+
+
+}
