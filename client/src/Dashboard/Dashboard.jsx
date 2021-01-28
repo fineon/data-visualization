@@ -6,12 +6,14 @@ import HighchartsReact from 'highcharts-react-official';
 
 import Header from './../Header/Header';
 import InstantAnswers from './../InstantAnswers/InstantAnswers';
+import WorldCards from '../WorldCards/WorldCards';
 
 import './Dashboard.scss';
 
 
-let allCountries = 'https://api.covid19api.com/summary';
-let canada = 'https://api.covid19api.com/live/country/canada';
+
+let allCountries = 'http://localhost:8080/allcountries';
+let canada = 'http://localhost:8080/canada';
 let duckDuckGo = 'http://localhost:8080/duckduckgo';
 
 export default class Dashboard extends Component {
@@ -19,9 +21,15 @@ export default class Dashboard extends Component {
         instantAnswers: {},
         countries: {},
         canada: [],
+
+        //highcharts properties
         pieChartCases: {},
         topNewCaseCountry: {},
+        //stacked chart
         top5Countries: {},
+        specificCountryChart: {},
+
+
     }
 
     //add comparison calculations to stats to emphasize impacts of COVID
@@ -72,14 +80,12 @@ export default class Dashboard extends Component {
                             }
                         ]
                     }]
-                },
+                }
             });
 
 
         });
 
-        // got CORS error, may need to set up an express server
-        //resolved using a code snippet
         axios.get(duckDuckGo).then(answer => {
             console.log(answer)
             this.setState({
@@ -88,43 +94,6 @@ export default class Dashboard extends Component {
         })
 
         this.setState({
-            // topNewCaseCountry: {
-            //     chart: {
-            //         type: 'pie'
-            //     },
-            //     title: {
-            //         text: 'United States COVID-19 Cases'
-            //     },
-            //     series: [{
-            //         name: 'cases',
-            //         colorByPoint: true,
-            //         data: [
-            //             {
-            //                 name: 'New Confirmed',
-            //                 y: item.data.Global.NewConfirmed
-            //             }, {
-            //                 name: 'Total Confirmed',
-            //                 y: item.data.Global.TotalConfirmed
-            //             },
-            //             {
-            //                 name: 'New Deaths',
-            //                 y: item.data.Global.NewDeaths
-            //             },
-            //             {
-            //                 name: 'Total Deaths',
-            //                 y: item.data.Global.TotalDeaths
-            //             },
-            //             {
-            //                 name: 'New Recovered',
-            //                 y: item.data.Global.NewRecovered
-            //             },
-            //             {
-            //                 name: 'Total Recovered',
-            //                 y: item.data.Global.TotalRecovered
-            //             }
-            //         ]
-            //     }]
-            // },
             top5Countries: {
                 chart: {
                     type: 'column'
@@ -144,7 +113,7 @@ export default class Dashboard extends Component {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'New Cases'
+                        text: 'Cases'
                     }
                 },
                 plotOptions: {
@@ -182,22 +151,36 @@ export default class Dashboard extends Component {
 
     }
 
-    //onChange event not firing, no console.log when clicked
-    // setCountry = (e) => {
-    //     axios.get(`https://api.covid19api.com/live/country/${e.target.countries.value}`).then(item => {
-    //         console.log(item);
-    //         this.setState({
-    //             countries: item.data
-    //         });
-    //     });
-
-    // }
-
-    leftClick=(e) => {
-        axios.get(`https://api.covid19api.com/live/country/${e}`).then(item => {
+    setCountry = (e) => {
+        axios.get(`http://localhost:8080/country/${e}`).then(item => {
             console.log(item);
             this.setState({
-                countries: item.data
+                specificCountryChart: {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: `${item.data.pop().Country} / ${item.data.pop().CountryCode} - ${new Date(item.data.pop().Date).toDateString()}`
+                    },
+                    series: [{
+                        name: 'cases',
+                        colorByPoint: true,
+                        data: [
+                            {
+                                name: 'Confirmed',
+                                y: item.data.pop().Confirmed
+                            },
+                            {
+                                name: 'Deaths',
+                                y: item.data.pop().Deaths
+                            },
+                            {
+                                name: 'Recovered',
+                                y: item.data.pop().Recovered
+                            }
+                        ]
+                    }]
+                },
             });
         });
     }
@@ -257,7 +240,47 @@ export default class Dashboard extends Component {
             console.log(top5Countries)
         }
 
-       
+        console.log(topNewCaseCountry)
+
+        const testChart = {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'U.S COVID-19 Cases'
+            },
+            series: [{
+                name: 'cases',
+                colorByPoint: true,
+                data: [
+                    {
+                        name: 'New Confirmed',
+                        y: this.state.countries.Countries && topNewCaseCountry.NewConfirmed
+                    }, {
+                        name: 'Total Confirmed',
+                        y: this.state.countries.Countries && topNewCaseCountry.TotalConfirmed
+                    },
+                    {
+                        name: 'New Deaths',
+                        y: this.state.countries.Countries && topNewCaseCountry.NewDeaths
+                    },
+                    {
+                        name: 'Total Deaths',
+                        y: this.state.countries.Countries && topNewCaseCountry.TotalDeaths
+                    },
+                    {
+                        name: 'New Recovered',
+                        y: this.state.countries.Countries && topNewCaseCountry.NewRecovered
+                    },
+                    {
+                        name: 'Total Recovered',
+                        y: this.state.countries.Countries && topNewCaseCountry.TotalRecovered
+                    }
+                ]
+            }],
+        }
+
+
         return (
             <section>
                 <Header />
@@ -267,11 +290,8 @@ export default class Dashboard extends Component {
                     <label > Select your country to view cases </label>
                     <select
                         name="countries"
-
-                        // can't read value
-                        // value={'need value from the country object'}
                         
-                        onChange={e => this.leftClick(e.target.value)}>
+                        onChange={e => this.setCountry(e.target.value)}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
@@ -284,6 +304,10 @@ export default class Dashboard extends Component {
                     </select>
                 </form>
 
+                {this.state.specificCountryChart.series !== undefined ? <HighchartsReact
+                    highcharts={Highcharts}
+                    options={this.state.specificCountryChart} /> : <h3>Select another country to begin</h3>}
+
                 <div className="test">
                     <HighchartsReact
                         highcharts={Highcharts}
@@ -291,45 +315,17 @@ export default class Dashboard extends Component {
                     <p>data updated as of {new Date(this.state.countries.Date).toDateString()}</p>
                 </div>
 
-                <div>
-                    <h2>World Total Confirmed Cases</h2>
-                    <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalConfirmed / 7800000000 * 100).toFixed(2) : null}%
-                    </p>
-                    <p>confirmed cases</p>
-                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
-                    </p>
-                </div>
+                <WorldCards
+                    Global={this.state.countries.Global} />
 
                 <div>
-                    <h2>World Total Death Cases</h2>
-                    <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalDeaths / 7800000000 * 100).toFixed(2) : null}%
-                    </p>
-                    <p>death cases</p>
-                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
-                    </p>
-                </div>
-
-                <div>
-                    <h2>World Total Recovered Cases</h2>
-                    <p>
-                        {this.state.countries.Global ? (this.state.countries.Global.TotalRecovered / 7800000000 * 100).toFixed(2) : null}%
-                    </p>
-                    <p>recovered cases</p>
-                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
-                    </p>
-                </div>
-
-                <div>
-                    {/* cant reach the variable */}
                     <h2>{this.state.countries.Countries && topNewCaseCountry.Country} is the country with most newly confirmed cases</h2>
-
-                    <h2>top new cases in country</h2>
 
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={this.state.pieChartCases} />
+                        options={testChart}
+                    />
+
 
                 </div>
 
