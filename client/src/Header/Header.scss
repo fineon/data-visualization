@@ -19,13 +19,6 @@
             font-size: large;
             text-decoration: none;
             transition: 0.5s;
-
-            &:last-child(4){
-                background-color: $emerald;
-                color: white;
-                border-radius: 4px;
-            }           
-
             &:hover{
                 color: white;
                 background-color: $oxfordblue;
@@ -35,6 +28,15 @@
 
         &__link{
             text-decoration: none;
+            &:last-child{
+                background-color: $emerald;
+                color: white;
+                border-radius: 4px;
+                &:hover{
+                    background-color: $oxfordblue;
+                    color: white;
+                }
+            }  
         }
     }
 
@@ -46,7 +48,7 @@
 
         &--left{
             width: 50%;
-            padding: 0 32px;
+            padding: 32px;
         }
        
     }

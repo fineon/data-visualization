@@ -10,6 +10,7 @@ import './SignIn.scss'
 
 import Header from './../Header/Header';
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyDYdM7vWZtPaUfEaxAtyezJKXW9CM5hgxE",
     authDomain: "covid-user-sign-in.firebaseapp.com",
@@ -22,9 +23,11 @@ const firebaseConfig = {
 
 
 
-export default function SignIn() {
-    useEffect( () => {
-        firebase.initializeApp(firebaseConfig);
+export default class SignIn extends Component {
+
+    componentDidMount() {
+        
+        !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
@@ -35,21 +38,18 @@ export default function SignIn() {
             signInSuccessUrl: './dashboard/',
             // Other config options...
         });
-
-        return () => {
-            ui.delete();
-           };
-
-    }, [])
+    }
 
 
-    return (
-        <section>
-            <Header loggedIn="visitor" />
 
-            <div id="firebaseui-container"></div>
+    render() {
+        return (
+            <section>
+                <Header loggedIn="visitor" />
 
-        </section>
-    )
+                <div id="firebaseui-container"></div>
 
+            </section>
+        )
+    }
 }

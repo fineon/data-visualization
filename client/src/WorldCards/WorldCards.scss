@@ -20,6 +20,11 @@
 
         &:hover{
             transform: scale(1.2);
+            border: 5px solid $rustyred;
+
+            &:last-child{
+                border: 5px solid $emerald;
+            }
 
         }
         
@@ -33,11 +38,19 @@
             margin: 32px 0;
             text-align: center;
             color: $rustyred;
+
+            &__recovered{
+                @extend .worldcards__card__stat;
+                color: $emerald;
+
+            }
+
+            
         
         }
 
         &__desc{
-            color: $sunglow;
+            color: white;
             text-align: center;
         }
 
