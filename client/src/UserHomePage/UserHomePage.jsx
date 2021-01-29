@@ -37,12 +37,6 @@ export default class Dashboard extends Component {
         }
     }
 
-    //add comparison calculations to stats to emphasize impacts of COVID
-    //add increments or decreasing numbers on dashboard
-    //add button enabling dark mode
-    //separate stats by components
-
-
     componentDidMount() {
         axios.get(allCountries).then(item => {
             console.log(item);
@@ -82,15 +76,6 @@ export default class Dashboard extends Component {
                 }
             });
         });
-
-
-      
-
-
-    }
-
-
-    componentDidUpdate() {
 
 
     }
@@ -140,21 +125,6 @@ export default class Dashboard extends Component {
                     <h2>Infection rate {null}</h2>
                     <h2>Recovered</h2>
 
-                </div>
-
-                <div>
-                    <h2>World Total Cases</h2>
-                    {/* <p>{(JSON.stringify(this.state.countries.Global.TotalConfirmed)/7,800,000,000)*100}</p> */}
-                    <p>{(780 / 7800) * 100}</p>
-                    <p>confirmed cases</p>
-                    <p>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview">Yale University</a>
-                    </p>
-                </div>
-
-                <div>
-                    {/* sort method in array? style with most red, then decrease redness by 10% */}
-                    <h2>Top #1 country with most confirmed cases</h2>
-                    <h2>Top #2...</h2>
                 </div>
 
                 <div>

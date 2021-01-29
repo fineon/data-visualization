@@ -10,21 +10,13 @@ import './SignIn.scss'
 
 import Header from './../Header/Header';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDYdM7vWZtPaUfEaxAtyezJKXW9CM5hgxE",
-    authDomain: "covid-user-sign-in.firebaseapp.com",
-    projectId: "covid-user-sign-in",
-    storageBucket: "covid-user-sign-in.appspot.com",
-    messagingSenderId: "224448347353",
-    appId: "1:224448347353:web:40604ad1606ad9e9fe92c8",
-    measurementId: "G-M38E2V56TT"
-};
+import fire from './fire';
 
 
 
 export default function SignIn() {
     useEffect( () => {
-        firebase.initializeApp(firebaseConfig);
+        
 
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
