@@ -1,0 +1,17 @@
+@import '../styles/fonts';
+@import '../styles/variables';
+@import '../styles/global.scss';
+
+.footer{
+    background-color: $ebony;
+
+    &__title{
+        color: white;
+    }
+
+    &__link{
+        color: white;
+        
+        text-decoration: none;
+    }
+}

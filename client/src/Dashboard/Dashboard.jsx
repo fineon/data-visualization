@@ -10,6 +10,8 @@ import WorldCards from '../WorldCards/WorldCards';
 
 import './Dashboard.scss';
 
+import Footer from './../Footer/Footer';
+import LocalCountry from './../LocalCountry/LocalCountry';
 
 
 let allCountries = 'http://localhost:8080/allcountries';
@@ -26,7 +28,7 @@ export default class Dashboard extends Component {
         pieChartCases: {},
         topNewCaseCountry: {},
         //stacked chart
-        top5Countries: {},
+        // top5Countries: {},
         specificCountryChart: {},
 
 
@@ -40,7 +42,6 @@ export default class Dashboard extends Component {
     componentDidMount() {
         axios.get(allCountries).then(item => {
             console.log(item);
-
             this.setState({
                 countries: item.data,
                 pieChartCases: {
@@ -82,7 +83,6 @@ export default class Dashboard extends Component {
                 }
             });
 
-
         });
 
         axios.get(duckDuckGo).then(answer => {
@@ -92,62 +92,12 @@ export default class Dashboard extends Component {
             })
         })
 
-        this.setState({
-            top5Countries: {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Top 5 Countries with Most New Cases'
-                },
-                xAxis: {
-                    categories: [
-                        1,
-                        2,
-                        3,
-                        4,
-                        5
-                    ]
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Cases'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                series: [
-                    {
-                        name: 'confirmed cases',
-                        data: [3, 3, 3]
-                    },
-                    {
-                        name: 'recovered cases',
-                        data: [3, 5, 1]
-                    },
-                    {
-                        name: 'death cases',
-                        data: [9, 5, 1]
-                    }
-                ]
-            },
+        axios.get(canada).then(province => {
+            console.log(province)
+            this.setState({
+                canada: province.data
+            })
         })
-
-
-
-
-    }
-
-
-    componentDidUpdate() {
-
     }
 
     setCountry = (e) => {
@@ -239,7 +189,23 @@ export default class Dashboard extends Component {
             console.log(top5Countries)
         }
 
-        console.log(topNewCaseCountry)
+        //for canada only
+        let latestCanada
+        let splicedDateCan
+
+        const today = new Date()
+        const yesterday = new Date(today)
+        yesterday.setDate(yesterday.getDate() - 1)
+        console.log(yesterday.toISOString())
+
+        if (this.state.canada) {
+            latestCanada = this.state.canada.pop()
+            
+        }
+
+        console.log(latestCanada)
+        
+
 
         const testChart = {
             chart: {
@@ -279,17 +245,57 @@ export default class Dashboard extends Component {
             }],
         }
 
+        const top5 = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Top 5 Countries with Most New Cases'
+            },
+            xAxis: {
+                categories: this.state.countries.Countries && top5Countries.map(name => name.Country)
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Cases'
+                }
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [
+                {
+                    name: 'confirmed cases',
+                    data: this.state.countries.Countries && top5Countries.map(name => name.NewConfirmed)
+                },
+                {
+                    name: 'recovered cases',
+                    data: this.state.countries.Countries && top5Countries.map(name => name.NewRecovered)
+                },
+                {
+                    name: 'death cases',
+                    data: this.state.countries.Countries && top5Countries.map(name => name.NewDeaths)
+                }
+            ]
+        }
+
 
         return (
             <section>
                 <Header />
-                <h2 id="dashboard">Data Dashboard</h2>
+                <h2 id="dashboard" className='dashboard'>Data Dashboard</h2>
 
                 <form >
                     <label > Select your country to view cases </label>
                     <select
                         name="countries"
-                        
+
                         onChange={e => this.setCountry(e.target.value)}>
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
@@ -334,24 +340,11 @@ export default class Dashboard extends Component {
                     {/* need to pass the processed variable */}
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={this.state.top5Countries} />
+                        options={top5} />
                 </div>
 
+                <LocalCountry />
 
-                <div>
-                    <h2>your country here</h2>
-                    <h2>Infection rate {null}</h2>
-                    <h2>Recovered</h2>
-                </div>
-
-
-
-                <div>
-                    <h2>Province details</h2>
-                    <p>province 1</p>
-                    <p>confirmed cases, recovered, deaths</p>
-                    <p>province 2 etc.</p>
-                </div>
 
                 <InstantAnswers
                     Heading={this.state.instantAnswers.Heading}
@@ -376,6 +369,7 @@ export default class Dashboard extends Component {
                     </Link>
                 </div>
 
+                <Footer />
             </section>
         )
     }

@@ -16,10 +16,8 @@ import fire from './fire';
 
 export default function SignIn() {
     useEffect( () => {
-        
-
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
+        
         ui.start('#firebaseui-container', {
             signInOptions: [
                 firebase.auth.EmailAuthProvider.PROVIDER_ID
