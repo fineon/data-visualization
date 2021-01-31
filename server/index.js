@@ -57,6 +57,9 @@ app.get('/canada', (req, res) => {
         .catch(err => console.log(err))
 });
 
+//'https://api.covid19api.com/live/country/canada'
+// 'https://api.covid19tracker.ca/reports?fill_dates=true&stat=&date&after&before'
+
 app.get('/country/:code', (req, res) => {
     axios.get(`https://api.covid19api.com/live/country/${req.params.code}`)
         .then(item => {

@@ -40,58 +40,76 @@ export default class Dashboard extends Component {
 
 
     componentDidMount() {
-        axios.get(allCountries).then(item => {
-            console.log(item);
-            this.setState({
-                countries: item.data,
-                pieChartCases: {
-                    chart: {
-                        type: 'pie'
-                    },
-                    title: {
-                        text: 'Global COVID-19 Cases'
-                    },
-                    series: [{
-                        name: 'cases',
-                        colorByPoint: true,
-                        data: [
-                            {
-                                name: 'New Confirmed',
-                                y: item.data.Global.NewConfirmed
-                            }, {
-                                name: 'Total Confirmed',
-                                y: item.data.Global.TotalConfirmed
-                            },
-                            {
-                                name: 'New Deaths',
-                                y: item.data.Global.NewDeaths
-                            },
-                            {
-                                name: 'Total Deaths',
-                                y: item.data.Global.TotalDeaths
-                            },
-                            {
-                                name: 'New Recovered',
-                                y: item.data.Global.NewRecovered
-                            },
-                            {
-                                name: 'Total Recovered',
-                                y: item.data.Global.TotalRecovered
-                            }
-                        ]
-                    }]
-                }
-            });
-
-        });
-
-        axios.get(duckDuckGo).then(answer => {
-            console.log(answer)
-            this.setState({
-                instantAnswers: answer.data,
-            })
-        })
-
+        
+         axios.get(allCountries).then(item => {
+             console.log(item);
+             this.setState({
+                 countries: item.data,
+                 pieChartCases: {
+                     chart: {
+                         type: 'pie'
+                     },
+                     title: {
+                         text: 'Global COVID-19 Cases'
+                     },
+                    //to render a half circle
+                    //  plotOptions: {
+                    //     pie: {
+                    //       dataLabels: {
+                    //         enabled: true,
+                    //         distance: -50,
+                    //         style: {
+                    //           fontWeight: "bold",
+                    //           color: "black"
+                    //         }
+                    //       },
+                    //       startAngle: -90,
+                    //       endAngle: 90,
+                    //       center: ["50%", "75%"],
+                    //       size: "110%"
+                    //     }
+                    //   },
+                     series: [{
+                         name: 'cases',
+                         colorByPoint: true,
+                         data: [
+                             {
+                                 name: 'New Confirmed',
+                                 y: item.data.Global.NewConfirmed
+                             }, {
+                                 name: 'Total Confirmed',
+                                 y: item.data.Global.TotalConfirmed
+                             },
+                             {
+                                 name: 'New Deaths',
+                                 y: item.data.Global.NewDeaths
+                             },
+                             {
+                                 name: 'Total Deaths',
+                                 y: item.data.Global.TotalDeaths
+                             },
+                             {
+                                 name: 'New Recovered',
+                                 y: item.data.Global.NewRecovered
+                             },
+                             {
+                                 name: 'Total Recovered',
+                                 y: item.data.Global.TotalRecovered
+                             }
+                         ]
+                     }]
+                 }
+             });
+ 
+         });
+ 
+         axios.get(duckDuckGo).then(answer => {
+             console.log(answer)
+             this.setState({
+                 instantAnswers: answer.data,
+             })
+         })
+         
         axios.get(canada).then(province => {
             console.log(province)
             this.setState({
@@ -190,24 +208,75 @@ export default class Dashboard extends Component {
         }
 
         //for canada only
-        let latestCanada
-        let splicedDateCan
+        let latestCanada = []
+        let splicedDateCan = []
 
-        const today = new Date()
-        const yesterday = new Date(today)
-        yesterday.setDate(yesterday.getDate() - 1)
-        console.log(yesterday.toISOString())
+
+        //getting provinces
+        let yukon
+        let sask
+        let BC
+        let ON
+        let alberta
+        let newBrun
+        let NS
+        let manitoba
+        let newFound
+        let northwest
+        let princeE
+        let nuvavut
+        let QB
+
+
+
+        let currentDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
 
         if (this.state.canada) {
-            latestCanada = this.state.canada.pop()
-            
+            latestCanada.push(this.state.canada.pop())
+
+            for (let i = 0; i < latestCanada.length; i++) {
+                console.log(typeof latestCanada[i])
+                if (Array.isArray(latestCanada[i])) {
+                    for (let a = 0; a < latestCanada[i].length; a++) {
+                        // console.log(typeof latestCanada[i][a])
+
+                        splicedDateCan.push({
+                            date: new Date(latestCanada[i][a].Date).toLocaleDateString(),
+                            province: latestCanada[i][a].Province,
+                            active: latestCanada[i][a].Active,
+                        })
+                    }
+                }
+            }
+
+            console.log(splicedDateCan)
+
+            //an attempt to automate filtertering 13 provinces
+            // for (let k of  [yukon,sask, BC, ON,alberta, newBrun,NS,manitoba,newFound, northwest, princeE, nuvavut, QB] ) {
+            //     for (const val of ['Yukon','Saskatchewan','British Columbia','Ontario','Alberta','New Brunswick','Nova Scotia','Manitoba','Newfoundland and Labrador','Northwest Territories','Prince Edward Island','Nunavut','Quebec']) {
+            //         k = splicedDateCan.filter(item => item.province === val)    
+            //     }
+            //     console.log(k)
+            // }
+
+
+            BC = splicedDateCan.filter(item => item.province === 'British Columbia')
+
+            ON = splicedDateCan.filter(item => item.province === 'Ontario')
+
+            alberta = splicedDateCan.filter(item => item.province === 'Alberta')
+
+            sask = splicedDateCan.filter(item => item.province === 'Saskatchewan')
+
+            QB = splicedDateCan.filter(item => item.province === 'Quebec')
+
+
         }
 
-        console.log(latestCanada)
-        
+        console.log(BC)
 
-
-        const testChart = {
+        //highcharts property to render
+        const mostNewCaseCountry = {
             chart: {
                 type: 'pie'
             },
@@ -285,11 +354,66 @@ export default class Dashboard extends Component {
             ]
         }
 
+        const allProvinces = {
+            title: {
+                text: 'Major Canadian Provinces - Active Cases History'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Cases'
+                }
+            },
+
+            xAxis: {
+                categories: this.state.canada && BC.map(date => date.date)
+            },
+
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            //   plotOptions: {
+            //     series: {
+            //       label: {
+            //         connectorAllowed: false
+            //       },
+            //       pointStart: 2010
+            //     }
+            //   },
+
+            series: [
+                {
+                    name: 'British Columbia',
+                    data: this.state.canada && BC.map(item => item.active)
+                }, {
+                    name: 'Alberta',
+                    data: this.state.canada && alberta.map(item => item.active)
+                }, {
+                    name: 'Saskachewan',
+                    data: this.state.canada && sask.map(item => item.active)
+                }, {
+                    name: 'Ontario',
+                    data: this.state.canada && ON.map(item => item.active)
+                }, {
+                    name: 'Quebec',
+                    data: this.state.canada && QB.map(item => item.active)
+                },
+            ],
+
+        }
+
 
         return (
             <section>
                 <Header />
                 <h2 id="dashboard" className='dashboard'>Data Dashboard</h2>
+
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={allProvinces} />
 
                 <form >
                     <label > Select your country to view cases </label>
@@ -328,7 +452,7 @@ export default class Dashboard extends Component {
 
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={testChart}
+                        options={mostNewCaseCountry}
                     />
 
 
@@ -337,7 +461,6 @@ export default class Dashboard extends Component {
                 <div>
                     <h2>Top 5 countries with most newly confirmed cases</h2>
 
-                    {/* need to pass the processed variable */}
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={top5} />
