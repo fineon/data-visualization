@@ -53,6 +53,7 @@ export default class Dashboard extends Component {
                          text: 'Global COVID-19 Cases'
                      },
                     //to render a half circle
+                    
                     //  plotOptions: {
                     //     pie: {
                     //       dataLabels: {
@@ -232,7 +233,13 @@ export default class Dashboard extends Component {
         let currentDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
 
         if (this.state.canada) {
-            latestCanada.push(this.state.canada.pop())
+            console.log(this.state.canada)
+            //for online api
+            // latestCanada.push(this.state.canada.pop())
+
+            //for offline api
+            latestCanada.push(this.state.canada)
+
 
             for (let i = 0; i < latestCanada.length; i++) {
                 console.log(typeof latestCanada[i])
