@@ -13,9 +13,7 @@ export default function WorldCards(props) {
                 <p className='worldcards__card__desc'>of the world population</p>
                 <h3 className='worldcards__card__desc'>that's {props.Global ? `${props.Global.TotalConfirmed} people!` : 'a lot !'}
                 </h3>
-                <p className='worldcards__card__desc'>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview"
-                    className='worldcards__card__link'>Yale University</a>
-                </p>
+              
             </div>
 
             <div className='worldcards__card'>
@@ -26,9 +24,7 @@ export default function WorldCards(props) {
                 <p className='worldcards__card__desc'>of the world population</p>
                 <h3 className='worldcards__card__desc'>that's {props.Global ? `${props.Global.TotalDeaths} people!` : 'a lot !'}
                 </h3>
-                <p className='worldcards__card__desc'>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview"
-                    className='worldcards__card__link'>Yale University</a>
-                </p>
+         
             </div>
 
             <div className='worldcards__card'>
@@ -39,10 +35,10 @@ export default function WorldCards(props) {
                 <p className='worldcards__card__desc'>of the world population</p>
                 <h3 className='worldcards__card__desc'>that's {props.Global ? `${props.Global.TotalRecovered} people!` : 'a lot !'}
                 </h3>
-                <p className='worldcards__card__desc'>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview"
+            </div>
+            <p className='worldcards__card__desc__source'>source: <a href="https://yaleglobal.yale.edu/content/world-population-2020-overview"
                     className='worldcards__card__link'>Yale University</a>
                 </p>
-            </div>
         </section>
     )
 }

@@ -12,7 +12,7 @@ export default function Header(props) {
                     <p className="header__nav__text">Home</p>
                 </Link>
                 
-                <p className="header__nav__text">Resources</p>
+
 
                 <Link to='/dashboard' className='header__nav__link'>
                     <p className="header__nav__text">Your Data Dashboard</p>

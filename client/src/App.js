@@ -6,6 +6,7 @@ import SignIn from './SignIn/SignIn';
 import TestSignIn from './SignIn/TestSignIn';
 import UserHomePage from './UserHomePage/UserHomePage';
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
+import Canada from './Canada/Canada';
 
 function App() {
   return (

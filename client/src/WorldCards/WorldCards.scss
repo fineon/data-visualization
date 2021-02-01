@@ -18,6 +18,8 @@
         background-color: $oxfordblue;
         transition: 0.5s;
 
+        
+
         &:hover{
             transform: scale(1.2);
             border: 5px solid $rustyred;
@@ -54,9 +56,13 @@
             text-align: center;
         }
 
+        &__source{
+            color: $ebony;
+        }
+
         &__link{
             text-decoration: none;
-            color: $sunglow;
+            color: $ebony;
             font-weight: 600;
         }
     }

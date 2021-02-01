@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import timelineChart from 'highcharts/modules/timeline';
 
 import Header from './../Header/Header';
 import InstantAnswers from './../InstantAnswers/InstantAnswers';
@@ -11,8 +12,9 @@ import WorldCards from '../WorldCards/WorldCards';
 import './Dashboard.scss';
 
 import Footer from './../Footer/Footer';
-import LocalCountry from './../LocalCountry/LocalCountry';
+import Canada from '../Canada/Canada';
 
+timelineChart(Highcharts);
 
 let allCountries = 'http://localhost:8080/allcountries';
 let canada = 'http://localhost:8080/canada';
@@ -23,6 +25,61 @@ export default class Dashboard extends Component {
         instantAnswers: {},
         countries: {},
         canada: [],
+        timeline: {
+            chart: {
+                type: 'timeline'
+            },
+            accessibility: {
+                screenReaderSection: {
+                    beforeChartFormat: '<h5>{chartTitle}</h5>' +
+                        '<div>{typeDescription}</div>' +
+                        '<div>{chartSubtitle}</div>' +
+                        '<div>{chartLongdesc}</div>' +
+                        '<div>{viewTableButton}</div>'
+                },
+                point: {
+                    valueDescriptionFormat: '{index}. {point.label}. {point.description}.'
+                }
+            },
+            xAxis: {
+                visible: false
+            },
+            yAxis: {
+                visible: false
+            },
+            title: {
+                text: 'Timeline of COVID-19 in Canada'
+            },
+            colors: [
+                '#4185F3',
+                '#427CDD',
+                '#406AB2',
+                '#3E5A8E',
+                '#3B4A68',
+                '#363C46'
+            ],
+            series: [{
+                data: [{
+                    name: 'First Outbreak',
+                    label: 'Dec.19: First Outbreak',
+                    description: 'December 2019: A new, infectious coronavirus, from the same family of viruses causing the common cold, is first identified in the City of Wuhan in China’s Hubei province. It starts spreading from person to person, beginning the outbreak.'
+                }, {
+                    name: 'First Case in B.C',
+                    label: 'Jan.2020: First Case in B.C',
+                    description: 'Jan.28,2020: Health officials announce the first presumptive case of novel coronavirus in B.C. The patient had recently been in Wuhan, China, on a business trip and tested positive after returning to his home in the Vancouver Coastal Health region. A second test at the National Microbiology Laboratory in Winnipeg later confirms the diagnosis.'
+                }, {
+                    name: 'Physical Distancing',
+                    label: 'March,2020: Start of Physical Distancing',
+                    description: 'March.16,2020: Many British Columbians begin the work week from home, following directives from public health officials to stay home if they are able.Gatherings of more than 50 people are banned in B.C., including sporting events, meetings, conferences, concerts and religious gatherings. Any businesses that cannot avoid large groups of people, like restaurants, bars and casinos, are ordered to shut down. Many restaurants move to take-out service only.Visits to long-term care homes are restricted to essential visitors only.'
+                }, {
+                    name: 'Public Health Emergency Declared',
+                    label: 'March, 2020: Public Health Emergency Declared',
+                    description: 'March.17,2020: Provincial Health Officer Dr. Bonnie Henry declares a public health emergency in B.C., giving herself power to make verbal orders to the public that are immediately enforceable. Classes and Flights are cancelled. Repatriation flights are announced'
+                }, 
+            ]
+            }]
+        },
+
 
         //highcharts properties
         pieChartCases: {},
@@ -40,20 +97,20 @@ export default class Dashboard extends Component {
 
 
     componentDidMount() {
-        
-         axios.get(allCountries).then(item => {
-             console.log(item);
-             this.setState({
-                 countries: item.data,
-                 pieChartCases: {
-                     chart: {
-                         type: 'pie'
-                     },
-                     title: {
-                         text: 'Global COVID-19 Cases'
-                     },
+
+        axios.get(allCountries).then(item => {
+            console.log(item);
+            this.setState({
+                countries: item.data,
+                pieChartCases: {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Global COVID-19 Cases'
+                    },
                     //to render a half circle
-                    
+
                     //  plotOptions: {
                     //     pie: {
                     //       dataLabels: {
@@ -70,47 +127,47 @@ export default class Dashboard extends Component {
                     //       size: "110%"
                     //     }
                     //   },
-                     series: [{
-                         name: 'cases',
-                         colorByPoint: true,
-                         data: [
-                             {
-                                 name: 'New Confirmed',
-                                 y: item.data.Global.NewConfirmed
-                             }, {
-                                 name: 'Total Confirmed',
-                                 y: item.data.Global.TotalConfirmed
-                             },
-                             {
-                                 name: 'New Deaths',
-                                 y: item.data.Global.NewDeaths
-                             },
-                             {
-                                 name: 'Total Deaths',
-                                 y: item.data.Global.TotalDeaths
-                             },
-                             {
-                                 name: 'New Recovered',
-                                 y: item.data.Global.NewRecovered
-                             },
-                             {
-                                 name: 'Total Recovered',
-                                 y: item.data.Global.TotalRecovered
-                             }
-                         ]
-                     }]
-                 }
-             });
- 
-         });
- 
-         axios.get(duckDuckGo).then(answer => {
-             console.log(answer)
-             this.setState({
-                 instantAnswers: answer.data,
-             })
-         })
-         
+                    series: [{
+                        name: 'cases',
+                        colorByPoint: true,
+                        data: [
+                            {
+                                name: 'New Confirmed',
+                                y: item.data.Global.NewConfirmed
+                            }, {
+                                name: 'Total Confirmed',
+                                y: item.data.Global.TotalConfirmed
+                            },
+                            {
+                                name: 'New Deaths',
+                                y: item.data.Global.NewDeaths
+                            },
+                            {
+                                name: 'Total Deaths',
+                                y: item.data.Global.TotalDeaths
+                            },
+                            {
+                                name: 'New Recovered',
+                                y: item.data.Global.NewRecovered
+                            },
+                            {
+                                name: 'Total Recovered',
+                                y: item.data.Global.TotalRecovered
+                            }
+                        ]
+                    }]
+                }
+            });
+
+        });
+
+        axios.get(duckDuckGo).then(answer => {
+            console.log(answer)
+            this.setState({
+                instantAnswers: answer.data,
+            })
+        })
+
         axios.get(canada).then(province => {
             console.log(province)
             this.setState({
@@ -208,80 +265,7 @@ export default class Dashboard extends Component {
             console.log(top5Countries)
         }
 
-        //for canada only
-        let latestCanada = []
-        let splicedDateCan = []
-
-
-        //getting provinces
-        let yukon
-        let sask
-        let BC
-        let ON
-        let alberta
-        let newBrun
-        let NS
-        let manitoba
-        let newFound
-        let northwest
-        let princeE
-        let nuvavut
-        let QB
-
-
-
-        let currentDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
-
-        if (this.state.canada) {
-            console.log(this.state.canada)
-            //for online api
-            // latestCanada.push(this.state.canada.pop())
-
-            //for offline api
-            latestCanada.push(this.state.canada)
-
-
-            for (let i = 0; i < latestCanada.length; i++) {
-                console.log(typeof latestCanada[i])
-                if (Array.isArray(latestCanada[i])) {
-                    for (let a = 0; a < latestCanada[i].length; a++) {
-                        // console.log(typeof latestCanada[i][a])
-
-                        splicedDateCan.push({
-                            date: new Date(latestCanada[i][a].Date).toLocaleDateString(),
-                            province: latestCanada[i][a].Province,
-                            active: latestCanada[i][a].Active,
-                        })
-                    }
-                }
-            }
-
-            console.log(splicedDateCan)
-
-            //an attempt to automate filtertering 13 provinces
-            // for (let k of  [yukon,sask, BC, ON,alberta, newBrun,NS,manitoba,newFound, northwest, princeE, nuvavut, QB] ) {
-            //     for (const val of ['Yukon','Saskatchewan','British Columbia','Ontario','Alberta','New Brunswick','Nova Scotia','Manitoba','Newfoundland and Labrador','Northwest Territories','Prince Edward Island','Nunavut','Quebec']) {
-            //         k = splicedDateCan.filter(item => item.province === val)    
-            //     }
-            //     console.log(k)
-            // }
-
-
-            BC = splicedDateCan.filter(item => item.province === 'British Columbia')
-
-            ON = splicedDateCan.filter(item => item.province === 'Ontario')
-
-            alberta = splicedDateCan.filter(item => item.province === 'Alberta')
-
-            sask = splicedDateCan.filter(item => item.province === 'Saskatchewan')
-
-            QB = splicedDateCan.filter(item => item.province === 'Quebec')
-
-
-        }
-
-        console.log(BC)
-
+  
         //highcharts property to render
         const mostNewCaseCountry = {
             chart: {
@@ -361,66 +345,19 @@ export default class Dashboard extends Component {
             ]
         }
 
-        const allProvinces = {
-            title: {
-                text: 'Major Canadian Provinces - Active Cases History'
-            },
-
-            yAxis: {
-                title: {
-                    text: 'Cases'
-                }
-            },
-
-            xAxis: {
-                categories: this.state.canada && BC.map(date => date.date)
-            },
-
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle'
-            },
-
-            //   plotOptions: {
-            //     series: {
-            //       label: {
-            //         connectorAllowed: false
-            //       },
-            //       pointStart: 2010
-            //     }
-            //   },
-
-            series: [
-                {
-                    name: 'British Columbia',
-                    data: this.state.canada && BC.map(item => item.active)
-                }, {
-                    name: 'Alberta',
-                    data: this.state.canada && alberta.map(item => item.active)
-                }, {
-                    name: 'Saskachewan',
-                    data: this.state.canada && sask.map(item => item.active)
-                }, {
-                    name: 'Ontario',
-                    data: this.state.canada && ON.map(item => item.active)
-                }, {
-                    name: 'Quebec',
-                    data: this.state.canada && QB.map(item => item.active)
-                },
-            ],
-
-        }
-
+      
 
         return (
             <section>
                 <Header />
                 <h2 id="dashboard" className='dashboard'>Data Dashboard</h2>
 
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={allProvinces} />
+                <Canada 
+                allProvinces={this.state.canada}
+                timeline={this.state.timeline}
+                />
+
+                
 
                 <form >
                     <label > Select your country to view cases </label>
@@ -472,8 +409,6 @@ export default class Dashboard extends Component {
                         highcharts={Highcharts}
                         options={top5} />
                 </div>
-
-                <LocalCountry />
 
 
                 <InstantAnswers
