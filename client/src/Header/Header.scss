@@ -19,24 +19,18 @@
             font-size: large;
             text-decoration: none;
             transition: 0.5s;
+            
             &:hover{
                 color: white;
                 background-color: $oxfordblue;
                 border-radius: 4px;
+             
             }
         }
 
         &__link{
             text-decoration: none;
-            &:last-child{
-                background-color: $emerald;
-                color: white;
-                border-radius: 4px;
-                &:hover{
-                    background-color: $oxfordblue;
-                    color: white;
-                }
-            }  
+            
         }
     }
 

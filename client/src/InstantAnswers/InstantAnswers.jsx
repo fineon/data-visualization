@@ -29,7 +29,7 @@ export default function InstantAnswers(props) {
                         className='answer__infobox'
                         key={info.wiki_order}>
                         <p className='answer__infobox__title'>{info.label}</p>
-                        <p className='answer__infobox__desc'>{info.value}</p>
+                        <p className='answer__infobox__desc'>{typeof info.value === 'string' ? info.value : 'not found'}</p>
                     </div>)
             }) : null}
             </div>
