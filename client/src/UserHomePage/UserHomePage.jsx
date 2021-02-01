@@ -58,9 +58,6 @@ export default function UserHomePage() {
                 Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
             shadow: true
         },
-        credits: {
-            enabled: false
-        },
         series: [{
             name: 'Year 1800',
             data: [107, 31, 635, 203, 2]
@@ -75,6 +72,18 @@ export default function UserHomePage() {
             data: [1216, 1001, 4436, 738, 40]
         }]
     }
+
+    const pollSubmit = (e) => {
+        let pollObj ={
+            option: e.target.option.value,
+        }
+
+        e.preventDefault();
+        axios.post('http://localhost:8080/comment',pollObj).then(res => {
+            console.log(res)
+        })
+    }
+
     return (
         <section>
             <Header username='there' />
@@ -87,14 +96,25 @@ export default function UserHomePage() {
 
             <form action="">
                 <label htmlFor="">enter data here</label>
-                <input type="text" placeholder='data here' />
+                <input 
+                type="text" 
+                name='test'
+                placeholder='data here' />
 
                 <button>Submit</button>
 
             </form>
-            <form action="">
-                <label htmlFor="">What's your favorite activity during quarantine? </label>
-                <input type="text" placeholder='poll here' />
+            
+            <form 
+            action="" 
+            onSubmit={pollSubmit}>
+                
+                <input 
+                type="checkbox" 
+                name='option1'
+                placeholder='poll here' />
+                <label for='option1'>What's your favorite activity during quarantine? </label>
+
                 <button>Submit</button>
             </form>
 

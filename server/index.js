@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const { default: axios } = require('axios');
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const { json } = require('express');
 const app = express();
@@ -23,6 +23,7 @@ let testArr = [];
 let duckgo;
 let canada;
 let tesObj;
+let formArr =[];
 
 app.get('/duckduckgo', (req, res) => {
     axios.get('https://api.duckduckgo.com/?q=covid&format=json&pretty=1')
@@ -83,7 +84,13 @@ app.get('/country/:code', (req, res) => {
 });
 
 app.post('/comment', (req, res) => {
-    return res.send('posted')
+    let formRes = {
+        id: uuidv4(),
+        comment: req.body.comment,
+    }
+
+    formArr.push(formRes)
+    return res.send(formArr)
 })
 
 
