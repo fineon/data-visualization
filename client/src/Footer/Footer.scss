@@ -3,15 +3,47 @@
 @import '../styles/global.scss';
 
 .footer{
-    background-color: $ebony;
 
     &__title{
         color: white;
+        margin: 0;
+        padding: 16px $desk-margin;
     }
 
     &__link{
         color: white;
-        
         text-decoration: none;
+        margin: $desk-margin;
     }
+
+    &__container1{
+        background-color: rgb(212, 212, 212);
+
+        &__title{
+            text-align: center;
+            
+        }
+    }
+
+    &__logo-container{
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        align-items:center;
+    }
+
+    &__logo{
+        width: 20%;
+        margin: 16px;
+
+        &:last-child{
+            width: 15%;
+        }
+       
+    }
+
+    &__container2{
+        background-color: $oxfordblue;
+    }
+
 }

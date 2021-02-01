@@ -85,16 +85,10 @@ export default class Dashboard extends Component {
         pieChartCases: {},
         topNewCaseCountry: {},
         //stacked chart
-        // top5Countries: {},
         specificCountryChart: {},
 
 
     }
-
-    //add comparison calculations to stats to emphasize impacts of COVID
-    //add increments or decreasing numbers on dashboard
-    //add button enabling dark mode
-
 
     componentDidMount() {
 
@@ -253,7 +247,8 @@ export default class Dashboard extends Component {
             console.log(rankedCases)
 
             // get the top 5 highest number of cases
-            cutRanked = rankedCases.splice(184, 5)
+            // cutRanked = rankedCases.splice(184, 5)
+            cutRanked = rankedCases.splice(rankedCases.length-5, 5)
             console.log(cutRanked)
 
             // search for top 5 countries with most confirmed cases
