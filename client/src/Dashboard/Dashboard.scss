@@ -1,8 +1,98 @@
 @import '../styles/fonts';
 @import '../styles/variables';
+@import '../styles/global.scss';
 
-.test{
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+@keyframes colorshift {
+    0% {color: $sunglow;}
+    20% {color: $rustyred;}
+    40% {color: $emerald;}
+    100% {color: $ebony;}
 }
+
+.dashboard{
+
+    &__title{
+        text-align: center;
+    }
+
+    &__global-form{
+        margin: 0 $desk-margin;
+
+        &__label{
+            @extend h4;
+            margin-right: 16px;
+        }
+    }
+
+    &__global-chart-container{
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__global-chart{
+        width: 45%;
+        height: auto;
+        object-fit: contain;
+        margin-right: $desk-margin;
+
+        &__title{
+            text-align: center;
+        }
+    }
+
+    &__source{
+        text-align: end;
+        margin: $desk-margin;
+    }
+
+    &__most-new-cases-container{
+        margin: $desk-margin;
+
+        &__title{
+           text-align: center;
+        }
+    }   
+    
+    &__top5-container{
+        margin: $desk-margin;
+
+        &__title{
+            text-align: center;
+        }
+
+        &__chart{
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+    }
+
+    &__banner{
+        
+      
+        background-color: $sunglow;
+        width: 100%;
+        margin-top: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+       
+        &__title{
+            margin: 0;
+            padding: 16px 0;
+            text-align: center;
+            animation-name: colorshift;
+            // animation-duration: 0.5s;
+        }
+
+        &__button{
+            margin: 16px;
+        }
+    }
+    
+
+}
+

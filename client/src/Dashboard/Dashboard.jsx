@@ -103,24 +103,6 @@ export default class Dashboard extends Component {
                     title: {
                         text: 'Global COVID-19 Cases'
                     },
-                    //to render a half circle
-
-                    //  plotOptions: {
-                    //     pie: {
-                    //       dataLabels: {
-                    //         enabled: true,
-                    //         distance: -50,
-                    //         style: {
-                    //           fontWeight: "bold",
-                    //           color: "black"
-                    //         }
-                    //       },
-                    //       startAngle: -90,
-                    //       endAngle: 90,
-                    //       center: ["50%", "75%"],
-                    //       size: "110%"
-                    //     }
-                    //   },
                     series: [{
                         name: 'cases',
                         colorByPoint: true,
@@ -343,16 +325,12 @@ export default class Dashboard extends Component {
 
 
         return (
-            <section>
+            <section className='dashboard'>
                 <Header />
-                <h2 id="dashboard" className='dashboard'>Data Dashboard</h2>
+                <h2 id="dashboard" className='dashboard__title' >Data Dashboard</h2>
 
-
-
-
-
-                <form >
-                    <label > Select your country to view cases </label>
+                <form className='dashboard__global-form'>
+                    <label className='dashboard__global-form__label'> Select your country to view cases </label>
                     <select
                         name="countries"
 
@@ -360,6 +338,7 @@ export default class Dashboard extends Component {
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
+                            className='dashboard__global-form__option'
                                 key={country.ID}
                                 value={country.Country}>
                                 {country.Country}
@@ -369,22 +348,30 @@ export default class Dashboard extends Component {
                     </select>
                 </form>
 
-                {this.state.specificCountryChart.series !== undefined ? <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.state.specificCountryChart} /> : <h3>Select another country to begin</h3>}
-
-                <div className="test">
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        options={this.state.pieChartCases} />
-                    <p>data updated as of {new Date(this.state.countries.Date).toDateString()}</p>
+                <div className='dashboard__global-chart-container'>
+                    <div className='dashboard__global-chart'>
+                        {this.state.specificCountryChart.series !== undefined ? <HighchartsReact
+                            highcharts={Highcharts}
+                            options={this.state.specificCountryChart} /> : <h3 className='dashboard__global-chart__title'>Select another country to begin</h3>}
+                    </div>
+                    <div className="dashboard__global-chart">
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={this.state.pieChartCases} />
+                        
+                    </div>
                 </div>
+                <p className='dashboard__source'>
+                    Data Updated As Of {new Date(this.state.countries.Date).toDateString()}
+                </p>
 
                 <WorldCards
                     Global={this.state.countries.Global} />
 
-                <div>
-                    <h2>{this.state.countries.Countries && topNewCaseCountry.Country} is the country with most newly confirmed cases</h2>
+                <div className='dashboard__most-new-cases-container'>
+                    <h2 className='dashboard__most-new-cases-container__title'>
+                        {this.state.countries.Countries && topNewCaseCountry.Country} is the country with most newly confirmed cases
+                    </h2>
 
                     <HighchartsReact
                         highcharts={Highcharts}
@@ -394,12 +381,13 @@ export default class Dashboard extends Component {
 
                 </div>
 
-                <div>
-                    <h2>Top 5 countries with most newly confirmed cases</h2>
-
+                <div className='dashboard__top5-container'>
+                    <h2 className='dashboard__top5-container__title'>Top 5 countries with most newly confirmed cases</h2>
+                    <div className='dashboard__top5-container__chart'>
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={top5} />
+                    </div>
                 </div>
 
                 <Canada
@@ -421,12 +409,14 @@ export default class Dashboard extends Component {
                     searchQuery={this.searchQuery}
                 />
 
-
-
-                <div>
-                    <h2>And More Data Awaits After Signing Up (Location-based data, export as PDF, CSV and social media sharing)</h2>
-                    <Link to='/signin'>
-                        <button>Sign In</button>
+                <div className='dashboard__banner'>
+                    <h2 className='dashboard__banner__title'>
+                        And More Data Awaits In Our Polls! Visit Them Today to Know What Your Quarantine Peers Are Up To
+                    </h2>
+                    <Link to='/dashboard'>
+                        <button className='dashboard__banner__button'>
+                            Visit Now
+                        </button>
                     </Link>
                 </div>
 

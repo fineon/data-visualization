@@ -1,0 +1,23 @@
+@import '../styles/fonts';
+@import '../styles/variables';
+@import '../styles/global.scss';
+
+.canada{
+
+    &__heading{
+        text-align: center;
+    }
+
+    &__title{
+        margin: $desk-margin;
+    }
+
+    &__chart{
+        margin: $desk-margin;
+        object-fit: contain;
+    }
+
+    &__source{
+        text-align: end;
+    }
+}

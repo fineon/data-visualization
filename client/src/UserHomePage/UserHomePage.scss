@@ -1,0 +1,48 @@
+@import './../styles/fonts';
+@import './../styles/variables';
+@import './../styles//global.scss';
+
+.userdash {
+
+    &__heading{
+        text-align: center;
+    }
+
+    &__container{
+        margin: auto;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start
+    }
+
+    &__question{
+
+    }
+
+    &__form {
+
+    }
+
+    &__input{
+        margin: 16px 0;
+        height: 24px;
+        border: none;
+        border-bottom: 2px solid $oxfordblue;
+        border-radius: 4px;
+    }
+
+    &__select{
+        @extend .userdash__input;
+        margin: 16px;
+        font-weight: 600;
+
+    }
+
+    &__label{
+        @extend p;
+
+    }
+
+
+}

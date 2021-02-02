@@ -18,7 +18,7 @@ export default class UserHomePage extends Component {
     state = {
         testChart: {
             title: {
-                text: 'User Question Chart'
+                text: 'Peer Survey WordCloud'
             },
             series: [{
                 type: 'wordcloud',
@@ -36,7 +36,7 @@ export default class UserHomePage extends Component {
                         weight: 1,
                     },
                 ],
-                name: 'Activities'
+                name: 'Frequency'
             }],
 
         },
@@ -100,7 +100,7 @@ export default class UserHomePage extends Component {
 
 
     userDataSubmit = (e) => {
-        
+
         if (e.target.activity.value && e.target.scale.value) {
             let userObj = {
                 name: e.target.activity.value,
@@ -108,8 +108,9 @@ export default class UserHomePage extends Component {
             }
 
             e.preventDefault();
-            axios.post('http://localhost:8080/userchart', userObj)
-                .then(item => {
+            axios
+            .post('http://localhost:8080/userchart', userObj)
+            .then(item => {
                     console.log(item)
                     this.setState({
                         testChart: {
@@ -131,6 +132,9 @@ export default class UserHomePage extends Component {
 
                     })
                 })
+            
+            e.target.reset();
+
 
         } else {
             e.preventDefault();
@@ -156,45 +160,62 @@ export default class UserHomePage extends Component {
             })
     }
 
-    logOut = () => {
-        this.props.history.push('/')
-    }
 
     render() {
         document.title = "CoDash - Your Data Dashboard"
         return (
-            <section>
+            <section className='userdash'>
                 <Header username='there' />
 
-                <h2>data dashboard</h2>
+                <h2 className='userdash__heading'>
+                    Your Polls and Data
+                </h2>
 
                 <HighchartsReact
                     highcharts={Highcharts}
                     options={this.state.testChart} />
 
-                <h3>What is Your Favorite Activity During Quarantine? </h3>
-                <form
-                    onSubmit={this.userDataSubmit}>
-                    <label htmlFor="">enter data here</label>
-                    <input
-                        type="text"
-                        name='activity'
-                        placeholder='fill in your activity here' />
-                    <label>on a scale of 1 to 5, how often do you do it?</label>
+                <div className='userdash__container'>
+                    <h3 className='userdash__question'>
+                        What is Your Favorite Activity During Quarantine?
+                    </h3>
 
-                    <select name="scale" id="scale">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                    <form
+                        className='userdash__form'
+                        onSubmit={this.userDataSubmit}>
+                        <label className='userdash__label'>
+                            Activities can range from physical activities like exercising, to online events like streaming, video calling
+                    </label>
+                        <br />
+                        <input
+                            className='userdash__input'
+                            type="text"
+                            name='activity'
+                            placeholder='fill in your activity here' />
+                        <br />
+                        <label className='userdash__label'>
+                            on a scale of 1 to 5, how often do you do it?
+                    </label>
 
-                    </select>
+                        <select
+                            className='userdash__select'
+                            name="scale"
+                            id="scale">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
 
-                    <button>Submit</button>
+                        <br/>
 
-                </form>
+                        <button className='userdash__button'>Submit</button>
 
+                    </form>
+                </div>
+
+                {/* 
                 <HighchartsReact
                     highcharts={Highcharts}
                     options={this.state.pollChart} />
@@ -215,11 +236,7 @@ export default class UserHomePage extends Component {
                     <input
                         type="submit"
                         value="submit" />
-                </form>
-
-                <button onClick={this.logOut}>
-                    Log Out
-                </button>
+                </form> */}
 
                 <Footer />
             </section>

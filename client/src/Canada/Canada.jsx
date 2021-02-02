@@ -2,6 +2,8 @@ import React from 'react'
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
+import './Canada.scss';
+
 export default function Canada(props) {
     //for canada only
     let latestCanada = []
@@ -22,14 +24,12 @@ export default function Canada(props) {
     let nuvavut
     let QB
 
-    let currentDate = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString();
-
     if (props.allProvinces) {
         //for online api
-        // latestCanada.push(props.allProvinces.pop())
+        latestCanada.push(props.allProvinces.pop())
 
         //for offline api
-        latestCanada.push(props.allProvinces)
+        // latestCanada.push(props.allProvinces)
 
 
         for (let i = 0; i < latestCanada.length; i++) {
@@ -114,21 +114,29 @@ export default function Canada(props) {
     }
 
     return (
-        <div>
-            <h2>Canada Statistics and Resources</h2>
+        <div className='canada'>
+            <h2 className='canada__heading'>
+                Canada Statistics and Resources
+            </h2>
 
-            <h3>Major Canada Provinces with Daily New Cases</h3>
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={allProvinces} />
+            <h3 className='canada__title'>
+                Major Canada Provinces with Daily New Cases
+            </h3>
+            <div className='canada__chart'>
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={allProvinces} />
+            </div>
 
-            <h3>Timeline of COVID-19 as it happends in British Columbia</h3>
-            <div>
+            <h3 className='canada__title'>
+                Timeline of COVID-19 in British Columbia
+            </h3>
+            <div className='canada__chart'>
                 <HighchartsReact
                     highcharts={Highcharts}
                     options={props.timeline}
                 />
-            <p>source: <a href="https://www.cbc.ca/news/canada/british-columbia/covid-19-bc-timeline-1.5520943">CBC News</a></p>
+                <p className='canada__source'>source: <a href="https://www.cbc.ca/news/canada/british-columbia/covid-19-bc-timeline-1.5520943">CBC News</a></p>
             </div>
         </div>
     )

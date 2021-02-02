@@ -44,31 +44,29 @@ app.get('/duckduckgo/:query', (req, res) => {
 });
 
 app.get('/allcountries', (req, res) => {
-    // axios.get('https://api.covid19api.com/summary')
-    //     .then(item => {
-    //         testObj = item.data
-    //         res.status(200).json(testObj)
+    axios.get('https://api.covid19api.com/summary')
+        .then(item => {
+            testObj = item.data
+            res.status(200).json(testObj)
 
-    //         // fs.writeFile('./data.json',JSON.stringify(item.data),(error)=> console.log(error))
-    //     })
-    //     .catch(err => console.log(err))
+            // fs.writeFile('./data.json',JSON.stringify(item.data),(error)=> console.log(error))
+        })
+        .catch(err => console.log(err))
     
-    res.send(allcountries)
+    // res.send(allcountries)
 });
 
-let onlyArr = []
-
 app.get('/canada', (req, res) => {
-    // axios.get('https://api.covid19api.com/live/country/canada')
-    //     .then(item => {
-    //         testArr.push(item.data)
-    //         res.status(200).json(testArr)
+    axios.get('https://api.covid19api.com/live/country/canada')
+        .then(item => {
+            testArr.push(item.data)
+            res.status(200).json(testArr)
 
-    //         // fs.writeFile('./canada.json',JSON.stringify(item.data),(error)=> console.log(error))
-    //     })
-    //     .catch(err => console.log(err))
+            // fs.writeFile('./canada.json',JSON.stringify(item.data),(error)=> console.log(error))
+        })
+        .catch(err => console.log(err))
    
-    res.send(canData)
+    // res.send(canData)
 });
 
 //'https://api.covid19api.com/live/country/canada'
