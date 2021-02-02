@@ -12,15 +12,13 @@ export default function Header(props) {
                     <p className="header__nav__text">Home</p>
                 </Link>
                 
-
-
                 <Link to='/dashboard' className='header__nav__link'>
                     <p className="header__nav__text">Your Data Dashboard</p>
                 </Link>
 
-                {props.loggedIn ? null : <Link to='/signin' className='header__nav__link'>
+                {/* {props.loggedIn ? null : <Link to='/signin' className='header__nav__link'>
                     <p className="header__nav__text">Log In / Sign Up</p>
-                </Link>}
+                </Link>} */}
 
             </nav>
 
