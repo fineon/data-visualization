@@ -2,123 +2,227 @@ import React, { Component, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import Header from './../Header/Header';
+import wordCloud from 'highcharts/modules/wordcloud';
 
+import firebase from "firebase/app";
+
+
+import Header from './../Header/Header';
 import './UserHomePage.scss';
 import Footer from '../Footer/Footer';
 
+wordCloud(Highcharts);
 
-export default function UserHomePage() {
-    document.title = "User Data Dashboard"
-    const testChart = {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'Historic World Population by Region'
-        },
-        subtitle: {
-            text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
-        },
-        xAxis: {
-            categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+export default class UserHomePage extends Component {
+
+    state = {
+        testChart: {
             title: {
-                text: null
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Population (millions)',
-                align: 'high'
+                text: 'User Question Chart'
             },
-            labels: {
-                overflow: 'justify'
-            }
+            series: [{
+                type: 'wordcloud',
+                data: [
+                    {
+                        name: 'cooking',
+                        weight: 5,
+                    },
+                    {
+                        name: 'cleaning',
+                        weight: 3,
+                    },
+                    {
+                        name: 'something',
+                        weight: 1,
+                    },
+                ],
+                name: 'Activities'
+            }],
+
         },
-        tooltip: {
-            valueSuffix: ' millions'
-        },
-        plotOptions: {
-            bar: {
-                dataLabels: {
-                    enabled: true
+
+        pollChart: {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Poll Chart'
+            },
+            xAxis: {
+                categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+                title: {
+                    text: null
                 }
-            }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            series: [
+                {
+                    name: 'Year 1800',
+                    data: [107, 31, 635, 203, 2]
+                },
+            ]
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 80,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor:
-                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-            shadow: true
-        },
-        series: [{
-            name: 'Year 1800',
-            data: [107, 31, 635, 203, 2]
-        }, {
-            name: 'Year 1900',
-            data: [133, 156, 947, 408, 6]
-        }, {
-            name: 'Year 2000',
-            data: [814, 841, 3714, 727, 31]
-        }, {
-            name: 'Year 2016',
-            data: [1216, 1001, 4436, 738, 40]
-        }]
+
+
     }
 
-    const pollSubmit = (e) => {
-        let pollObj ={
+
+
+    userDataSubmit = (e) => {
+        
+        if (e.target.activity.value && e.target.scale.value) {
+            let userObj = {
+                name: e.target.activity.value,
+                weight: e.target.scale.value,
+            }
+
+            e.preventDefault();
+            axios.post('http://localhost:8080/userchart', userObj)
+                .then(item => {
+                    console.log(item)
+                    this.setState({
+                        testChart: {
+                            series: [
+                                {
+                                    type: 'wordcloud',
+                                    data: item.data.map(word => {
+                                        return {
+                                            name: word.name,
+                                            weight: word.weight
+                                        }
+                                    })
+                                }
+                            ],
+                            title: {
+                                text: 'User Activities Summary'
+                            }
+                        },
+
+                    })
+                })
+
+        } else {
+            e.preventDefault();
+            alert('please fill in both fields')
+        }
+    }
+
+    pollSubmit = (e) => {
+        let pollObj = {
             option: e.target.option.value,
         }
 
         e.preventDefault();
-        axios.post('http://localhost:8080/comment',pollObj).then(res => {
-            console.log(res)
-        })
+        axios.post('http://localhost:8080/poll', pollObj)
+            .then(res => {
+                console.log(res)
+
+                // this.setState({
+                // pollChart: {
+
+                // }
+                // })
+            })
     }
 
-    return (
-        <section>
-            <Header username='there' />
+    logOut = () => {
+        this.props.history.push('/')
+    }
 
-            <h2>data dashboard</h2>
+    render() {
+        document.title = "CoDash - Your Data Dashboard"
+        return (
+            <section>
+                <Header username='there' />
 
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={testChart} />
+                <h2>data dashboard</h2>
 
-            <form action="">
-                <label htmlFor="">enter data here</label>
-                <input 
-                type="text" 
-                name='test'
-                placeholder='data here' />
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={this.state.testChart} />
 
-                <button>Submit</button>
+                <h3>What is Your Favorite Activity During Quarantine? </h3>
+                <form
+                    onSubmit={this.userDataSubmit}>
+                    <label htmlFor="">enter data here</label>
+                    <input
+                        type="text"
+                        name='activity'
+                        placeholder='fill in your activity here' />
+                    <label>on a scale of 1 to 5, how often do you do it?</label>
 
-            </form>
-            
-            <form 
-            action="" 
-            onSubmit={pollSubmit}>
-                
-                <input 
-                type="checkbox" 
-                name='option1'
-                placeholder='poll here' />
-                <label for='option1'>What's your favorite activity during quarantine? </label>
+                    <select name="scale" id="scale">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
 
-                <button>Submit</button>
-            </form>
+                    </select>
 
-            <Footer />
-        </section>
-    )
+                    <button>Submit</button>
+
+                </form>
+
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={this.state.pollChart} />
+
+                <h3>How are you protecting yourself from the pandemic? </h3>
+                <form
+                    onSubmit={e => this.pollSubmit(e)}
+                >
+
+                    <input
+                        type="checkbox"
+                        name='option1'
+                        value='mask'
+                        placeholder='poll here' />
+
+                    <label >mask</label>
+                    <br />
+                    <input
+                        type="submit"
+                        value="submit" />
+                </form>
+
+                <button onClick={this.logOut}>
+                    Log Out
+                </button>
+
+                <Footer />
+            </section>
+        )
+    }
 }

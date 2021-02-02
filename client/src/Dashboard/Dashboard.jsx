@@ -75,8 +75,8 @@ export default class Dashboard extends Component {
                     name: 'Public Health Emergency Declared',
                     label: 'March, 2020: Public Health Emergency Declared',
                     description: 'March.17,2020: Provincial Health Officer Dr. Bonnie Henry declares a public health emergency in B.C., giving herself power to make verbal orders to the public that are immediately enforceable. Classes and Flights are cancelled. Repatriation flights are announced'
-                }, 
-            ]
+                },
+                ]
             }]
         },
 
@@ -248,7 +248,7 @@ export default class Dashboard extends Component {
 
             // get the top 5 highest number of cases
             // cutRanked = rankedCases.splice(184, 5)
-            cutRanked = rankedCases.splice(rankedCases.length-5, 5)
+            cutRanked = rankedCases.splice(rankedCases.length - 5, 5)
             console.log(cutRanked)
 
             // search for top 5 countries with most confirmed cases
@@ -260,7 +260,7 @@ export default class Dashboard extends Component {
             console.log(top5Countries)
         }
 
-  
+
         //highcharts property to render
         const mostNewCaseCountry = {
             chart: {
@@ -340,19 +340,16 @@ export default class Dashboard extends Component {
             ]
         }
 
-      
+
 
         return (
             <section>
                 <Header />
                 <h2 id="dashboard" className='dashboard'>Data Dashboard</h2>
 
-                <Canada 
-                allProvinces={this.state.canada}
-                timeline={this.state.timeline}
-                />
 
-                
+
+
 
                 <form >
                     <label > Select your country to view cases </label>
@@ -405,6 +402,10 @@ export default class Dashboard extends Component {
                         options={top5} />
                 </div>
 
+                <Canada
+                    allProvinces={this.state.canada}
+                    timeline={this.state.timeline}
+                />
 
                 <InstantAnswers
                     Heading={this.state.instantAnswers.Heading}

@@ -81,15 +81,32 @@ app.get('/country/:code', (req, res) => {
             res.status(200).json(tesObj)
         })
         .catch(err => console.log(err))
-});
+})
 
-app.post('/comment', (req, res) => {
+app.post('/userchart', (req, res) => {
     let formRes = {
         id: uuidv4(),
-        comment: req.body.comment,
+        name: req.body.name,
+        weight: req.body.weight,
     }
 
     formArr.push(formRes)
+    console.log(formRes)
+
+    //for offline data storage
+    // fs.writeFile('./wordcloud.json',JSON.stringify(formArr),(error)=> console.log(error))
+
+    return res.send(formArr)
+})
+
+app.post('/poll', (req, res) => {
+    let formRes = {
+        id: uuidv4(),
+        option: req.body.option,
+    }
+
+    formArr.push(formRes)
+    console.log(formRes)
     return res.send(formArr)
 })
 
