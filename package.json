@@ -1,0 +1,24 @@
+{
+  "proxy": "https://whispering-springs-73013.herokuapp.com:5000",
+  "name": "data-visualization",
+  "version": "1.0.0",
+  "description": "package.json file for heroku deployment",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "start": "npm start --prefix server",
+    "server": "nodemon index --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install --prefix server && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fineon/data-visualization.git"
+  },
+  "author": "ian nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fineon/data-visualization/issues"
+  },
+  "homepage": "https://github.com/fineon/data-visualization#readme"
+}
