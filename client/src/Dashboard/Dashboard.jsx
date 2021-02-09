@@ -16,9 +16,13 @@ import Canada from '../Canada/Canada';
 
 timelineChart(Highcharts);
 
-let allCountries = 'http://localhost:8080/allcountries';
-let canada = 'http://localhost:8080/canada';
-let duckDuckGo = 'http://localhost:8080/duckduckgo';
+let allCountries = `${API_URL}/allcountries`;
+let canada = `${API_URL}/canada`;
+let duckDuckGo = `${API_URL}/duckduckgo`;
+
+const API_URL = process.env.NODE_ENV === "production"
+  ? 'https://whispering-springs-73013.herokuapp.com'
+  : 'http://localhost:5000';
 
 export default class Dashboard extends Component {
     state = {
@@ -153,7 +157,7 @@ export default class Dashboard extends Component {
     }
 
     setCountry = (e) => {
-        axios.get(`http://localhost:8080/country/${e}`).then(item => {
+        axios.get(`${API_URL}/country/${e}`).then(item => {
             console.log(item);
             this.setState({
                 specificCountryChart: {
@@ -188,7 +192,7 @@ export default class Dashboard extends Component {
 
     searchQuery = (e) => {
         e.preventDefault()
-        axios.get(`http://localhost:8080/duckduckgo/${e.target.query.value}`).then(res => {
+        axios.get(`${API_URL}/duckduckgo/${e.target.query.value}`).then(res => {
             console.log(res)
             this.setState({
                 instantAnswers: res.data,
