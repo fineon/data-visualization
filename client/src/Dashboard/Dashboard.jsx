@@ -16,13 +16,15 @@ import Canada from '../Canada/Canada';
 
 timelineChart(Highcharts);
 
+const API_URL = process.env.NODE_ENV === "production"
+  ? 'https://whispering-springs-73013.herokuapp.com'
+  : 'http://localhost:5000';
+
 let allCountries = `${API_URL}/allcountries`;
 let canada = `${API_URL}/canada`;
 let duckDuckGo = `${API_URL}/duckduckgo`;
 
-const API_URL = process.env.NODE_ENV === "production"
-  ? 'https://whispering-springs-73013.herokuapp.com'
-  : 'http://localhost:5000';
+
 
 export default class Dashboard extends Component {
     state = {
