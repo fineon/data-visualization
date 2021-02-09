@@ -14,10 +14,12 @@ app.use(bodyParser.urlencoded());
 app.use(express.json());
 app.use(cors());
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+const port = process.env.PORT || 5000;
+
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+// });
 
 let testArr = [];
 let duckgo;
@@ -109,5 +111,14 @@ app.post('/poll', (req, res) => {
 })
 
 
+if (process.env.NODE_ENV === "production") {
+    // Set static folder
+    app.use(express.static("../client/build"));
+  
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
+    });
+  }
 
-app.listen(8080, () => console.log(`Listening on port 8080`))
+
+app.listen(port, () => console.log(`Listening on ${port} `))
