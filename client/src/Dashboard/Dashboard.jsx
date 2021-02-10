@@ -17,14 +17,13 @@ import Canada from '../Canada/Canada';
 timelineChart(Highcharts);
 
 const API_URL = process.env.NODE_ENV === "production"
-  ? 'https://whispering-springs-73013.herokuapp.com'
-  : 'http://localhost:5000';
+    ? 'https://codash-19.herokuapp.com'
+    : 'http://localhost:5000';
+
 
 let allCountries = `${API_URL}/allcountries`;
 let canada = `${API_URL}/canada`;
 let duckDuckGo = `${API_URL}/duckduckgo`;
-
-
 
 export default class Dashboard extends Component {
     state = {
@@ -344,7 +343,7 @@ export default class Dashboard extends Component {
 
                         {this.state.countries.Countries && this.state.countries.Countries.map(country => {
                             return <option
-                            className='dashboard__global-form__option'
+                                className='dashboard__global-form__option'
                                 key={country.ID}
                                 value={country.Country}>
                                 {country.Country}
@@ -364,7 +363,7 @@ export default class Dashboard extends Component {
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={this.state.pieChartCases} />
-                        
+
                     </div>
                 </div>
                 <p className='dashboard__source'>
@@ -390,9 +389,9 @@ export default class Dashboard extends Component {
                 <div className='dashboard__top5-container'>
                     <h2 className='dashboard__top5-container__title'>Top 5 countries with most newly confirmed cases</h2>
                     <div className='dashboard__top5-container__chart'>
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        options={top5} />
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={top5} />
                     </div>
                 </div>
 

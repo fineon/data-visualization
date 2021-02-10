@@ -67,11 +67,17 @@
     align-items: center;
     
     &__input{
-        border: 1px solid $ebony;
+        border: none;
+        border-bottom: 2px solid $oxfordblue;
         border-radius: 4px;
         width: 50%;
         height: 2vw;
         margin: 16px;
+
+        &::placeholder{
+            padding-left: 8px;
+        }
+
     }
 
     // &__button{

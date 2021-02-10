@@ -1,5 +1,5 @@
 {
-  "proxy": "https://whispering-springs-73013.herokuapp.com:5000",
+  "proxy": "https://codash-19.herokuapp.com:5000",
   "name": "data-visualization",
   "version": "1.0.0",
   "description": "package.json file for heroku deployment",

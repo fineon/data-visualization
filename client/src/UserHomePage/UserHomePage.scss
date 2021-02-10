@@ -30,6 +30,9 @@
         border: none;
         border-bottom: 2px solid $oxfordblue;
         border-radius: 4px;
+        &::placeholder{
+            padding-left: 8px;
+        }
     }
 
     &__select{
@@ -42,6 +45,11 @@
     &__label{
         @extend p;
 
+    }
+
+    &__button{
+        margin-top: 16px;
+        margin-bottom: 16px;
     }
 
 

@@ -16,16 +16,11 @@ app.use(cors());
 
 const port = process.env.PORT || 5000;
 
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-// });
-
 let testArr = [];
 let duckgo;
 let canada;
 let tesObj;
-let formArr =[];
+let formArr = [];
 
 app.get('/duckduckgo', (req, res) => {
     axios.get('https://api.duckduckgo.com/?q=covid&format=json&pretty=1')
@@ -54,7 +49,7 @@ app.get('/allcountries', (req, res) => {
             // fs.writeFile('./data.json',JSON.stringify(item.data),(error)=> console.log(error))
         })
         .catch(err => console.log(err))
-    
+
     // res.send(allcountries)
 });
 
@@ -67,7 +62,7 @@ app.get('/canada', (req, res) => {
             // fs.writeFile('./canada.json',JSON.stringify(item.data),(error)=> console.log(error))
         })
         .catch(err => console.log(err))
-   
+
     // res.send(canData)
 });
 
@@ -114,11 +109,11 @@ app.post('/poll', (req, res) => {
 if (process.env.NODE_ENV === "production") {
     // Set static folder
     app.use(express.static("../client/build"));
-  
+
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
+        res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
     });
-  }
+}
 
 
 app.listen(port, () => console.log(`Listening on ${port} `))

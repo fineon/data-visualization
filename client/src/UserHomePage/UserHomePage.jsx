@@ -13,12 +13,17 @@ import Footer from '../Footer/Footer';
 
 wordCloud(Highcharts);
 
+const API_URL = process.env.NODE_ENV === "production"
+    ? 'https://codash-19.herokuapp.com'
+    : 'http://localhost:5000';
+
+
 export default class UserHomePage extends Component {
 
     state = {
         testChart: {
             title: {
-                text: 'Peer Survey WordCloud'
+                text: 'Peer Survey Word Cloud'
             },
             series: [{
                 type: 'wordcloud',
@@ -32,7 +37,7 @@ export default class UserHomePage extends Component {
                         weight: 3,
                     },
                     {
-                        name: 'something',
+                        name: 'singing',
                         weight: 1,
                     },
                 ],
@@ -41,6 +46,7 @@ export default class UserHomePage extends Component {
 
         },
 
+        /*
         pollChart: {
             chart: {
                 type: 'bar'
@@ -93,6 +99,7 @@ export default class UserHomePage extends Component {
                 },
             ]
         },
+        */
 
 
     }
@@ -109,8 +116,8 @@ export default class UserHomePage extends Component {
 
             e.preventDefault();
             axios
-            .post('http://localhost:8080/userchart', userObj)
-            .then(item => {
+                .post(`${API_URL}/userchart`, userObj)
+                .then(item => {
                     console.log(item)
                     this.setState({
                         testChart: {
@@ -132,7 +139,7 @@ export default class UserHomePage extends Component {
 
                     })
                 })
-            
+
             e.target.reset();
 
 
@@ -148,7 +155,7 @@ export default class UserHomePage extends Component {
         }
 
         e.preventDefault();
-        axios.post('http://localhost:8080/poll', pollObj)
+        axios.post(`${API_URL}/poll`, pollObj)
             .then(res => {
                 console.log(res)
 
@@ -208,7 +215,7 @@ export default class UserHomePage extends Component {
                             <option value="5">5</option>
                         </select>
 
-                        <br/>
+                        <br />
 
                         <button className='userdash__button'>Submit</button>
 
