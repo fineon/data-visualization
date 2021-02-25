@@ -24,6 +24,7 @@ export default function Canada(props) {
     let nuvavut
     let QB
 
+    //checking of the data has returned and exist to continue processing it
     if (props.allProvinces) {
         //for online api
         latestCanada.push(props.allProvinces.pop())
@@ -32,6 +33,7 @@ export default function Canada(props) {
         // latestCanada.push(props.allProvinces)
 
 
+        //extracting a 2 level nested array to a new array with only objects
         for (let i = 0; i < latestCanada.length; i++) {
             console.log(typeof latestCanada[i])
             if (Array.isArray(latestCanada[i])) {
@@ -47,16 +49,7 @@ export default function Canada(props) {
 
         console.log(splicedDateCan)
 
-        //an attempt to automate filtertering 13 provinces
-
-        // for (let k of  [yukon,sask, BC, ON,alberta, newBrun,NS,manitoba,newFound, northwest, princeE, nuvavut, QB] ) {
-        //     for (const val of ['Yukon','Saskatchewan','British Columbia','Ontario','Alberta','New Brunswick','Nova Scotia','Manitoba','Newfoundland and Labrador','Northwest Territories','Prince Edward Island','Nunavut','Quebec']) {
-        //         k = splicedDateCan.filter(item => item.province === val)    
-        //     }
-        //     console.log(k)
-        // }
-
-
+        //finding only the object that matches the correpsonding province name
         BC = splicedDateCan.filter(item => item.province === 'British Columbia')
 
         ON = splicedDateCan.filter(item => item.province === 'Ontario')
@@ -66,12 +59,11 @@ export default function Canada(props) {
         sask = splicedDateCan.filter(item => item.province === 'Saskatchewan')
 
         QB = splicedDateCan.filter(item => item.province === 'Quebec')
-
-
     }
 
     console.log(BC)
 
+    //declare a variable to plug in Highcharts
     const allProvinces = {
         title: {
             text: 'Major Canadian Provinces - Active Cases History'
