@@ -6,8 +6,7 @@ import './Canada.scss';
 
 export default function Canada(props) {
     //for canada only
-    let latestCanada = []
-    let splicedDateCan = []
+    let latestCanada = [];
 
     //getting provinces
     let yukon
@@ -26,42 +25,27 @@ export default function Canada(props) {
 
     //checking of the data has returned and exist to continue processing it
     if (props.allProvinces) {
+        
+        latestCanada = props.allProvinces.pop()
         //for online api
-        latestCanada.push(props.allProvinces.pop())
+        // latestCanada.push(props.allProvinces.pop())
 
         //for offline api
         // latestCanada.push(props.allProvinces)
 
+        console.log(latestCanada)
 
-        //extracting a 2 level nested array to a new array with only objects
-        for (let i = 0; i < latestCanada.length; i++) {
-            console.log(typeof latestCanada[i])
-            if (Array.isArray(latestCanada[i])) {
-                for (let a = 0; a < latestCanada[i].length; a++) {
-                    splicedDateCan.push({
-                        date: new Date(latestCanada[i][a].Date).toLocaleDateString(),
-                        province: latestCanada[i][a].Province,
-                        active: latestCanada[i][a].Active,
-                    })
-                }
-            }
-        }
+        BC = latestCanada?.filter(item => item.Province === 'British Columbia');
+        console.log(BC);
 
-        console.log(splicedDateCan)
+        ON = latestCanada?.filter(item => item.Province === 'Ontario');
 
-        //finding only the object that matches the correpsonding province name
-        BC = splicedDateCan.filter(item => item.province === 'British Columbia')
+        alberta = latestCanada?.filter(item => item.Province === 'Alberta');
 
-        ON = splicedDateCan.filter(item => item.province === 'Ontario')
+        sask = latestCanada?.filter(item => item.Province === 'Saskatchewan');
 
-        alberta = splicedDateCan.filter(item => item.province === 'Alberta')
-
-        sask = splicedDateCan.filter(item => item.province === 'Saskatchewan')
-
-        QB = splicedDateCan.filter(item => item.province === 'Quebec')
+        QB = latestCanada?.filter(item => item.Province === 'Quebec');
     }
-
-    console.log(BC)
 
     //declare a variable to plug in Highcharts
     const allProvinces = {
@@ -76,7 +60,7 @@ export default function Canada(props) {
         },
 
         xAxis: {
-            categories: props.allProvinces && BC.map(date => date.date)
+            categories: props.allProvinces && BC?.map(date => new Date(date.Date).toLocaleDateString())
         },
 
         legend: {
@@ -87,22 +71,21 @@ export default function Canada(props) {
         series: [
             {
                 name: 'British Columbia',
-                data: props.allProvinces && BC.map(item => item.active)
+                data: props.allProvinces && BC?.map(item => item.Active)
             }, {
                 name: 'Alberta',
-                data: props.allProvinces && alberta.map(item => item.active)
+                data: props.allProvinces && alberta?.map(item => item.Active)
             }, {
                 name: 'Saskachewan',
-                data: props.allProvinces && sask.map(item => item.active)
+                data: props.allProvinces && sask?.map(item => item.Active)
             }, {
                 name: 'Ontario',
-                data: props.allProvinces && ON.map(item => item.active)
+                data: props.allProvinces && ON?.map(item => item.Active)
             }, {
                 name: 'Quebec',
-                data: props.allProvinces && QB.map(item => item.active)
+                data: props.allProvinces && QB?.map(item => item.Active)
             },
         ],
-
     }
 
     return (
