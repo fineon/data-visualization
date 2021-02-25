@@ -6,8 +6,7 @@ import './Canada.scss';
 
 export default function Canada(props) {
     //for canada only
-    let latestCanada = []
-    let splicedDateCan = []
+    let latestCanada = [];
 
     //getting provinces
     let yukon
@@ -35,60 +34,25 @@ export default function Canada(props) {
 
         console.log(latestCanada[0]
             .map(item => {
-            return item.Active
-        })
+                return item.Active
+            })
         );
 
         BC = latestCanada[0].filter(item => item.Province === 'British Columbia');
         console.log(BC);
-    
-        ON = latestCanada[0].filter(item => item.Province === 'Ontario')
 
-        alberta = latestCanada[0].filter(item => item.Province === 'Alberta')
+        ON = latestCanada[0].filter(item => item.Province === 'Ontario');
 
-        sask = latestCanada[0].filter(item => item.Province === 'Saskatchewan')
+        alberta = latestCanada[0].filter(item => item.Province === 'Alberta');
 
-        QB = latestCanada[0].filter(item => item.Province === 'Quebec')
+        sask = latestCanada[0].filter(item => item.Province === 'Saskatchewan');
 
-
-        // for (let i = 0; i < latestCanada.length; i++) {
-        //     console.log(typeof latestCanada[i])
-        //     if (Array.isArray(latestCanada[i])) {
-        //         for (let a = 0; a < latestCanada[i].length; a++) {
-        //             splicedDateCan.push({
-        //                 date: new Date(latestCanada[i][a].Date).toLocaleDateString(),
-        //                 province: latestCanada[i][a].Province,
-        //                 active: latestCanada[i][a].Active,
-        //             })
-        //         }
-        //     }
-        // }
-
-        // console.log(splicedDateCan)
-
-        //an attempt to automate filtertering 13 provinces
-
-        // for (let k of  [yukon,sask, BC, ON,alberta, newBrun,NS,manitoba,newFound, northwest, princeE, nuvavut, QB] ) {
-        //     for (const val of ['Yukon','Saskatchewan','British Columbia','Ontario','Alberta','New Brunswick','Nova Scotia','Manitoba','Newfoundland and Labrador','Northwest Territories','Prince Edward Island','Nunavut','Quebec']) {
-        //         k = splicedDateCan.filter(item => item.province === val)    
-        //     }
-        //     console.log(k)
-        // }
-
-        // BC = splicedDateCan.filter(item => item.province === 'British Columbia')
-
-        // ON = splicedDateCan.filter(item => item.province === 'Ontario')
-
-        // alberta = splicedDateCan.filter(item => item.province === 'Alberta')
-
-        // sask = splicedDateCan.filter(item => item.province === 'Saskatchewan')
-
-        // QB = splicedDateCan.filter(item => item.province === 'Quebec')
-
+        QB = latestCanada[0].filter(item => item.Province === 'Quebec');
 
     }
-    // console.log(BC)
-/*
+
+    console.log(QB);
+
     const allProvinces = {
         title: {
             text: 'Major Canadian Provinces - Active Cases History'
@@ -101,7 +65,7 @@ export default function Canada(props) {
         },
 
         xAxis: {
-            categories: props.allProvinces && BC.map(date => date.date)
+            categories: props.allProvinces && BC.map(date => new Date(date.Date).toLocaleDateString())
         },
 
         legend: {
@@ -112,68 +76,23 @@ export default function Canada(props) {
         series: [
             {
                 name: 'British Columbia',
-                data: props.allProvinces && BC.map(item => item.active)
+                data: props.allProvinces && BC.map(item => item.Active)
             }, {
                 name: 'Alberta',
-                data: props.allProvinces && alberta.map(item => item.active)
+                data: props.allProvinces && alberta.map(item => item.Active)
             }, {
                 name: 'Saskachewan',
-                data: props.allProvinces && sask.map(item => item.active)
+                data: props.allProvinces && sask.map(item => item.Active)
             }, {
                 name: 'Ontario',
-                data: props.allProvinces && ON.map(item => item.active)
+                data: props.allProvinces && ON.map(item => item.Active)
             }, {
                 name: 'Quebec',
-                data: props.allProvinces && QB.map(item => item.active)
+                data: props.allProvinces && QB.map(item => item.Active)
             },
         ],
 
     }
-
-    */
-
-    console.log(QB);
-
-   const allProvinces = {
-    title: {
-        text: 'Major Canadian Provinces - Active Cases History'
-    },
-
-    yAxis: {
-        title: {
-            text: 'Cases'
-        }
-    },
-
-    xAxis: {
-        categories: props.allProvinces && BC.map(date => new Date(date.Date).toLocaleDateString())
-    },
-
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-    series: [
-        {
-            name: 'British Columbia',
-            data: props.allProvinces && BC.map(item => item.Active)
-        }, {
-            name: 'Alberta',
-            data: props.allProvinces && alberta.map(item => item.Active)
-        }, {
-            name: 'Saskachewan',
-            data: props.allProvinces && sask.map(item => item.Active)
-        }, {
-            name: 'Ontario',
-            data: props.allProvinces && ON.map(item => item.Active)
-        }, {
-            name: 'Quebec',
-            data: props.allProvinces && QB.map(item => item.Active)
-        },
-    ],
-
-}
 
     return (
         <div className='canada'>
