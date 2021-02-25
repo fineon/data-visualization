@@ -33,19 +33,22 @@ export default function Canada(props) {
 
         console.log(latestCanada)
 
-        console.log(latestCanada[0].map(item => item.Active)
+        console.log(latestCanada[0]
+            .map(item => {
+            return item.Active
+        })
         );
 
         BC = latestCanada[0].filter(item => item.Province === 'British Columbia');
         console.log(BC);
     
-        ON = latestCanada[0].filter(item => item.province === 'Ontario')
+        ON = latestCanada[0].filter(item => item.Province === 'Ontario')
 
-        alberta = latestCanada[0].filter(item => item.province === 'Alberta')
+        alberta = latestCanada[0].filter(item => item.Province === 'Alberta')
 
-        sask = latestCanada[0].filter(item => item.province === 'Saskatchewan')
+        sask = latestCanada[0].filter(item => item.Province === 'Saskatchewan')
 
-        QB = latestCanada[0].filter(item => item.province === 'Quebec')
+        QB = latestCanada[0].filter(item => item.Province === 'Quebec')
 
 
         // for (let i = 0; i < latestCanada.length; i++) {
