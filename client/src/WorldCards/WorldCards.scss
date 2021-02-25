@@ -8,6 +8,10 @@
     justify-content: center;
     align-items: center;
 
+    @include phone {
+        flex-flow: column wrap;
+    }
+
     
 
     &__card{
@@ -17,6 +21,11 @@
         width: 30%;
         background-color: $oxfordblue;
         transition: 0.5s;
+
+        @include phone {
+            width: 90%;
+            margin: 16px;
+        }
 
         
 
@@ -33,6 +42,10 @@
         &__title{
             text-align: center;
             color: white;
+
+            @include phone {
+                font-size: 1rem;
+            }
         }
 
         &__stat{
@@ -40,6 +53,11 @@
             margin: 32px 0;
             text-align: center;
             color: $rustyred;
+
+            @include phone {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
 
             &__recovered{
                 @extend .worldcards__card__stat;
@@ -54,6 +72,10 @@
         &__desc{
             color: white;
             text-align: center;
+
+            @include phone {
+                font-size: 0.5rem;
+            }
         }
 
         &__source{

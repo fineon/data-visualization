@@ -2,13 +2,6 @@
 @import '../styles/variables';
 @import '../styles/global.scss';
 
-@keyframes colorshift {
-    0% {color: $sunglow;}
-    20% {color: $rustyred;}
-    40% {color: $emerald;}
-    100% {color: $ebony;}
-}
-
 .dashboard{
 
     &__title{
@@ -29,6 +22,10 @@
         flex-flow: row wrap;
         justify-content: center;
         align-items: center;
+
+        @include phone {
+            flex-flow: column wrap;
+        }
     }
 
     &__global-chart{
@@ -36,6 +33,11 @@
         height: auto;
         object-fit: contain;
         margin-right: $desk-margin;
+
+        @include phone {
+            width: 100%;
+            margin-right: 0;
+        }
 
         &__title{
             text-align: center;
@@ -49,6 +51,10 @@
 
     &__most-new-cases-container{
         margin: $desk-margin;
+
+        @include phone {
+            margin: 16px;
+        }
 
         &__title{
            text-align: center;
@@ -70,8 +76,6 @@
     }
 
     &__banner{
-        
-      
         background-color: $sunglow;
         width: 100%;
         margin-top: 32px;
@@ -84,8 +88,9 @@
             margin: 0;
             padding: 16px 0;
             text-align: center;
-            animation-name: colorshift;
-            // animation-duration: 0.5s;
+            @include phone {
+                font-size: 1.5rem;
+            }
         }
 
         &__button{

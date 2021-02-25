@@ -6,9 +6,11 @@
     
     &__title{
         text-align: center;
-        // &--left{
-
-        // }
+        &--left{
+            @include phone {
+                text-align: center;
+            }
+        }
     }
 
     &__title-img-container{
@@ -16,9 +18,20 @@
         flex-flow: row wrap;
         justify-content: space-between;
 
+        @include phone {
+            flex-direction: column;
+            width: 100%;
+        }
+
         &--left{
             width: 50%;
             margin-left: 32px;
+
+            @include phone {
+                width: 90%;
+                margin: 0;
+                padding: 16px;
+            }
         }
     }
 
@@ -43,17 +56,31 @@
         transform:scale(0.8);
         margin-right: 32px;
         object-fit: contain;
+
+        @include phone {
+            width: 100%;
+            margin-right: 16px;
+        }
     }
 
     &__infobox{
         width: 30%;
         margin-right: 16px;
+        @include phone {
+            width: 100%;
+            margin-right: 0;
+        }
         
 
         &-container{
         display: flex;
         flex-flow: row wrap;
         margin: 0 32px;
+
+        @include phone {
+            flex-direction: column;
+            margin: 0 16px;
+        }
         }
 
         &__title{

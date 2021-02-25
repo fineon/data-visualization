@@ -6,7 +6,12 @@ $sunglow: #fdca40;
 $ebony: #464e47;
 $oxfordblue: #001d4a;
 
-//animation
-
+//margin
 $desk-margin: 32px;
 
+//media queries mixins
+@mixin phone {
+    @media screen and (max-width: 320px) {
+        @content
+    }
+}
