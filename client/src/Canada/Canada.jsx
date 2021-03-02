@@ -1,5 +1,5 @@
 import React from 'react'
-import Highcharts, { chart } from 'highcharts';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import './Canada.scss';
@@ -9,23 +9,14 @@ export default function Canada(props) {
     let latestCanada = [];
 
     //getting provinces
-    let yukon
     let sask
     let BC
     let ON
     let alberta
-    let newBrun
-    let NS
-    let manitoba
-    let newFound
-    let northwest
-    let princeE
-    let nuvavut
     let QB
 
     //checking of the data has returned and exist to continue processing it
     if (props.allProvinces) {
-        
         latestCanada = props.allProvinces.pop()
         //for online api
         // latestCanada.push(props.allProvinces.pop())

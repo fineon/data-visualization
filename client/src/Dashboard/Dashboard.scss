@@ -89,7 +89,7 @@
             padding: 16px 0;
             text-align: center;
             @include phone {
-                font-size: 1.5rem;
+                font-size: $h2phone;
             }
         }
 
