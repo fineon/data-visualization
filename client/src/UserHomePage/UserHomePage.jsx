@@ -1,11 +1,8 @@
-import React, { Component, useContext, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
-import Highcharts, { chart } from 'highcharts';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import wordCloud from 'highcharts/modules/wordcloud';
-
-import firebase from "firebase/app";
-
 
 import Header from './../Header/Header';
 import './UserHomePage.scss';

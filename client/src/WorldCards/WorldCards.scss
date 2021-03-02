@@ -55,7 +55,7 @@
             color: $rustyred;
 
             @include phone {
-                font-size: $h2phone;
+                font-size: 2rem;
                 font-weight: 700;
             }
 

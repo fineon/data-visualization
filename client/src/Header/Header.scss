@@ -13,12 +13,20 @@
         justify-content: flex-end;
         padding-right: 32px;
 
+        @include phone{
+            justify-content: space-around;
+        }
+
         &__text{
             margin: 8px 8px;
             padding: 4px;
             font-size: large;
             text-decoration: none;
             transition: 0.5s;
+
+            @include phone{
+                font-size: $h2phone;
+            }
             
             &:hover{
                 color: white;
@@ -61,7 +69,7 @@
         text-transform: capitalize;
 
         @include phone {
-            font-size: 2rem;
+            font-size: $h1phone;    
         }
     }
 
@@ -69,7 +77,7 @@
         font-size: 1.25rem;
 
         @include phone {
-            font-size: 1rem;
+            font-size: $h2phone;
         }
 
         &__phrase{
